@@ -1,0 +1,19 @@
+@import '~semantic-ui-css/semantic.min.css';
+
+body > div,
+body > div > div,
+body > div > div > div.login-form {
+  height: 100%;
+}
+
+.nowrap {
+  white-space: nowrap !important;
+}
+
+.cut-too-long {
+  display: block;
+  width: 30rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
