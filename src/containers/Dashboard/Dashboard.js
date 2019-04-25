@@ -52,7 +52,7 @@ class Dashboard extends Component {
     params.set('offset', data.offset);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/users/operations?${params.toString()}`, {
+      const response = await fetch(`${process.env.REACT_APP_REST_API_LOCATION}/api/users/operations?${params.toString()}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
@@ -89,7 +89,7 @@ class Dashboard extends Component {
 
   onRemove = async(operationId) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/users/operations/${operationId}`, {
+      const response = await fetch(`${process.env.REACT_APP_REST_API_LOCATION}/api/users/operations/${operationId}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
@@ -108,7 +108,7 @@ class Dashboard extends Component {
 
   onEdit = async(values) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/users/operations/${values.id}`, {
+      const response = await fetch(`${process.env.REACT_APP_REST_API_LOCATION}/api/users/operations/${values.id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ class Dashboard extends Component {
 
     return (
       <Container className='dashboard'>
-        <Header as='h2'>Dasboard</Header>
+        <Header as='h2'>Dasboard 2</Header>
         <Table celled stackable>
           <Table.Header>
             <Table.Row>

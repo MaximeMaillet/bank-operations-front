@@ -19,7 +19,7 @@ class Home extends Component {
   };
 
   onSubmit = async(value) => {
-    const response = await fetch('http://127.0.0.1:8080/api/users/login', {
+    const response = await fetch(`${process.env.REACT_APP_REST_API_LOCATION}/api/users/login`, {
       headers: {
         'Content-Type': 'application/json',
       },
