@@ -6,6 +6,7 @@ import history from "../../routes/history";
 import RemoveModal from "../../components/Modals/RemoveModal/RemoveModal";
 import EditModal from "../../components/Modals/EditModal/EditModal";
 import {Redirect} from "react-router-dom";
+import AddOperationModal from "../../components/Modals/AddOperationModal/AddOperationModal";
 // import Pagination from "../../components/Pagination/Pagination";
 
 class Dashboard extends Component {
@@ -127,6 +128,10 @@ class Dashboard extends Component {
     }
   };
 
+  onOperationAdded = (operation) => {
+    this.loadOperations(this.state);
+  };
+
   render() {
     if(this.state.redirect) {
       return <Redirect to='/' />
@@ -136,10 +141,15 @@ class Dashboard extends Component {
     if(!operations || !page || !lastPage) {
       return null;
     }
-    let firstDayOfMonth = moment(operations[0].date).startOf('month');
+
+    let firstDayOfMonth = moment().startOf('month');
+    if(operations.length > 0){
+      firstDayOfMonth = moment(operations[0].date).startOf('month');
+    }
 
     return (
       <Container className='dashboard'>
+        <AddOperationModal onOperationAdded={this.onOperationAdded} />
         <Header as='h2'>Dasboard 2</Header>
         <Table celled stackable>
           <Table.Header>
@@ -166,7 +176,7 @@ class Dashboard extends Component {
                 <Table.Row key={index}>
                   <Table.Cell>
                     {isLabel ? label : null}
-                    {operation.date.format('YYYY-MM-DD')}
+                    {operation.date.format('DD/MM/YYYY')}
                   </Table.Cell>
                   <Table.Cell>
                     {operation.category}

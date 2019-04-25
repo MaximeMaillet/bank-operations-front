@@ -43,21 +43,21 @@ class OperationForm extends Component {
       <Form size='large' onSubmit={this.handleSubmit}>
         <Segment>
           <DatePicker
-            selected={values.date.toDate()}
-            dateFormat="YYYY-MM-DD"
+            selected={values && values.date ? values.date.toDate() : moment().toDate()}
+            dateFormat="d/MM/YYYY"
             onChange={(value) => this.onChange({target: {name: 'date', value: moment(new Date(value))}})}
           />
           <Form.Input
             onChange={this.onChange}
             name="label_str"
-            value={values.label_str}
+            value={values && values.label_str ? values.label_str : ''}
             fluid
             placeholder='Label'
           />
           <Creatable
-            value={values.tags.map((tag, index) => {
+            value={values && values.tag ? values.tags.map((tag, index) => {
               return {value: index, label: tag}
-            })}
+            }) : []}
             onChange={(value) => this.onChange({target: {name: 'tags', value: value.map((val) => val.label)}})}
             isMulti
             options={options}
@@ -69,7 +69,7 @@ class OperationForm extends Component {
                 onChange={this.onChange}
                 name="credit"
                 id="credit"
-                value={values.credit}
+                value={values && values.credit ? values.credit : 0}
                 placeholder='Credit'
               />
             </Form.Field>
@@ -79,7 +79,7 @@ class OperationForm extends Component {
                 onChange={this.onChange}
                 id="debit"
                 name="debit"
-                value={values.debit}
+                value={values && values.debit ? values.debit : 0}
                 placeholder='Debit'
               />
             </Form.Field>
@@ -87,7 +87,7 @@ class OperationForm extends Component {
           <Form.Input
             onChange={this.onChange}
             name="category"
-            value={values.category}
+            value={values && values.category ? values.category : ''}
             fluid
             placeholder='Category'
           />
