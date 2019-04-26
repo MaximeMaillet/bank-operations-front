@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
-import { Container, Header, Icon, Label, Button, Table, Pagination } from 'semantic-ui-react'
+import { Container, Header, Icon, Label, Button, Table, Pagination, Menu, Segment, Responsive } from 'semantic-ui-react'
 import history from "../../routes/history";
 import RemoveModal from "../../components/Modals/RemoveModal/RemoveModal";
 import EditModal from "../../components/Modals/EditModal/EditModal";
 import {Redirect} from "react-router-dom";
 import AddOperationModal from "../../components/Modals/AddOperationModal/AddOperationModal";
+import {TopHeader} from "../../components/TopHeader/TopHeader";
 // import Pagination from "../../components/Pagination/Pagination";
 
 class Dashboard extends Component {
@@ -147,84 +148,89 @@ class Dashboard extends Component {
       firstDayOfMonth = moment(operations[0].date).startOf('month');
     }
 
+    let fixed = false;
+
     return (
-      <Container className='dashboard'>
-        <AddOperationModal onOperationAdded={this.onOperationAdded} />
-        <Header as='h2'>Dasboard 2</Header>
-        <Table celled stackable>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell width={2}>Date</Table.HeaderCell>
-              <Table.HeaderCell>Catégorie</Table.HeaderCell>
-              <Table.HeaderCell width={9}>Libellé</Table.HeaderCell>
-              <Table.HeaderCell>Crédit</Table.HeaderCell>
-              <Table.HeaderCell>Débit</Table.HeaderCell>
-              <Table.HeaderCell>Action</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
+    	<Responsive>
+		    <TopHeader/>
+		    <Container className='dashboard'>
+			    <AddOperationModal onOperationAdded={this.onOperationAdded} />
+			    <Header as='h2'>Dasboard 2</Header>
+			    <Table celled stackable>
+				    <Table.Header>
+					    <Table.Row>
+						    <Table.HeaderCell width={2}>Date</Table.HeaderCell>
+						    <Table.HeaderCell>Catégorie</Table.HeaderCell>
+						    <Table.HeaderCell width={9}>Libellé</Table.HeaderCell>
+						    <Table.HeaderCell>Crédit</Table.HeaderCell>
+						    <Table.HeaderCell>Débit</Table.HeaderCell>
+						    <Table.HeaderCell>Action</Table.HeaderCell>
+					    </Table.Row>
+				    </Table.Header>
 
-          <Table.Body>
-            {operations.map((operation, index) => {
-              let isLabel = false;
-              if(moment(operation.date).startOf('month') < firstDayOfMonth) {
-                firstDayOfMonth = moment(operation.date).startOf('month');
-                isLabel = true;
-              }
+				    <Table.Body>
+					    {operations.map((operation, index) => {
+						    let isLabel = false;
+						    if(moment(operation.date).startOf('month') < firstDayOfMonth) {
+							    firstDayOfMonth = moment(operation.date).startOf('month');
+							    isLabel = true;
+						    }
 
-              const label = <Label color="blue" ribbon>{firstDayOfMonth.format('MMMM YYYY')}</Label>;
-              return (
-                <Table.Row key={index}>
-                  <Table.Cell>
-                    {isLabel ? label : null}
-                    {operation.date.format('DD/MM/YYYY')}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {operation.category}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <div className="cut-too-long">{operation.label_str}</div>
-                    {operation.tags.map((tag, index) => {
-                      return (
-                        <Label key={index} as='span' tag>{tag}</Label>
-                      );
-                    })}
-                  </Table.Cell>
-                  <Table.Cell>{operation.credit}</Table.Cell>
-                  <Table.Cell>{operation.debit}</Table.Cell>
-                  <Table.Cell className="nowrap">
-                    <EditModal
-                      operation={operation}
-                      onEdit={this.onEdit}
-                    />
-                    <RemoveModal
-                      onYes={() => this.onRemove(operation.id)}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
+						    const label = <Label color="blue" ribbon>{firstDayOfMonth.format('MMMM YYYY')}</Label>;
+						    return (
+							    <Table.Row key={index}>
+								    <Table.Cell>
+									    {isLabel ? label : null}
+									    {operation.date.format('DD/MM/YYYY')}
+								    </Table.Cell>
+								    <Table.Cell>
+									    {operation.category}
+								    </Table.Cell>
+								    <Table.Cell>
+									    <div className="cut-too-long">{operation.label_str}</div>
+									    {operation.tags.map((tag, index) => {
+										    return (
+											    <Label key={index} as='span' tag>{tag}</Label>
+										    );
+									    })}
+								    </Table.Cell>
+								    <Table.Cell>{operation.credit}</Table.Cell>
+								    <Table.Cell>{operation.debit}</Table.Cell>
+								    <Table.Cell className="nowrap">
+									    <EditModal
+										    operation={operation}
+										    onEdit={this.onEdit}
+									    />
+									    <RemoveModal
+										    onYes={() => this.onRemove(operation.id)}
+									    />
+								    </Table.Cell>
+							    </Table.Row>
+						    );
+					    })}
+				    </Table.Body>
 
-          <Table.Footer>
-            <Table.Row>
-              <Table.HeaderCell colSpan='5'>
-                {/*<Pagination pagination={pagination} floated="right"/>*/}
-                <Pagination
-                  floated="right"
-                  defaultActivePage={page}
-                  ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
-                  firstItem={{ content: <Icon name='angle double left' />, icon: true }}
-                  lastItem={{ content: <Icon name='angle double right' />, icon: true }}
-                  prevItem={{ content: <Icon name='angle left' />, icon: true }}
-                  nextItem={{ content: <Icon name='angle right' />, icon: true }}
-                  totalPages={lastPage}
-                  onPageChange={this.onPaginationChanged}
-                />
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Footer>
-        </Table>
-      </Container>
+				    <Table.Footer>
+					    <Table.Row>
+						    <Table.HeaderCell colSpan='5'>
+							    {/*<Pagination pagination={pagination} floated="right"/>*/}
+							    <Pagination
+								    floated="right"
+								    defaultActivePage={page}
+								    ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
+								    firstItem={{ content: <Icon name='angle double left' />, icon: true }}
+								    lastItem={{ content: <Icon name='angle double right' />, icon: true }}
+								    prevItem={{ content: <Icon name='angle left' />, icon: true }}
+								    nextItem={{ content: <Icon name='angle right' />, icon: true }}
+								    totalPages={lastPage}
+								    onPageChange={this.onPaginationChanged}
+							    />
+						    </Table.HeaderCell>
+					    </Table.Row>
+				    </Table.Footer>
+			    </Table>
+		    </Container>
+	    </Responsive>
     );
   }
 }
