@@ -1,0 +1,21 @@
+div.form-input-errors {
+  &.hidden {
+    display: none;
+  }
+
+  &.visible {
+    display: block;
+  }
+
+  font-weight: bold;
+  color: $red-dark;
+  margin: 0.5em 0 0 1em;
+}
+
+
+.custom-form {
+  .react-datepicker-wrapper,
+  .react-datepicker-wrapper .react-datepicker__input-container {
+    width: 100%;
+  }
+}

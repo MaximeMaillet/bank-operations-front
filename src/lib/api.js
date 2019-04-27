@@ -1,12 +1,6 @@
-export default async(method, endpoint, parameters, queryString, headers) => {
+export default async(method, endpoint, parameters, headers) => {
 
 	const params = new URLSearchParams();
-
-	if(queryString) {
-		for(let param in queryString) {
-			params.set(param, queryString[param]);
-		}
-	}
 
 	if(method === 'GET' && parameters) {
 		for(let param in parameters) {
@@ -22,11 +16,16 @@ export default async(method, endpoint, parameters, queryString, headers) => {
 		method,
 	};
 
+	const token = localStorage.getItem('token');
+	if(token) {
+		config.headers['Authorization'] =`Bearer ${token}`;
+	}
+
 	if(method !== 'GET') {
 		config['body'] = JSON.stringify(parameters);
 	}
 
-	const result = await fetch(`${process.env.REACT_APP_REST_API_LOCATION}/api${endpoint}${params.toString()}`, config);
+	const result = await fetch(`${process.env.REACT_APP_REST_API_LOCATION}/api${endpoint}${params.toString() ? '?'+params.toString() : ''}`, config);
 
 	if (result.headers.has('content-type')) {
 		if(result.headers.get('content-type').match(/^application\/json/i)) {

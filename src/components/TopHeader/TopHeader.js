@@ -6,7 +6,6 @@ import shouldLogged from "../../hoc/shouldLogged";
 class TopHeader extends Component {
 
 	render() {
-		console.log(this.props);
 		let fixed = false;
 
 		return (

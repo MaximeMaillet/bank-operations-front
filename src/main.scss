@@ -1,10 +1,12 @@
 @import '~semantic-ui-css/semantic.min.css';
+@import '~react-semantic-toasts/styles/react-semantic-alert.css';
 
-body > div,
-body > div > div,
-body > div > div > div.login-form {
-  height: 100%;
+$red-dark: #912d2b;
+@mixin border-error {
+  box-shadow: 0 0 0 1px #e0b4b4 inset, 0 0 0 0 transparent;
 }
+
+@import './styles/form.scss';
 
 .nowrap {
   white-space: nowrap !important;

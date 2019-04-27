@@ -1,100 +1,103 @@
 import React, {Component} from 'react';
-import {Input, Form, Segment} from "semantic-ui-react";
-import DatePicker from "react-datepicker";
-import moment from 'moment';
-import {Creatable} from 'react-select';
+import {Form, Segment} from "semantic-ui-react";
+import {connect} from "react-redux";
 
 import './operation-form.scss';
+import submit from "../OperationForm/submit";
+import {Field, reduxForm} from "redux-form";
+import FormComponent from "../../FormComponents/form";
+import api from "../../../lib/api";
+
+export const formName = 'operationForm';
 
 class OperationForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      values: props.operation,
-      submit: false,
-    };
-  }
 
-  onChange = (value) => {
-    console.log(value);
-    const state = {...this.state.values};
-    state[value.target.name] = value.target.value;
-    this.setState({values: state});
-  };
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if(this.props.submit) {
-      this.handleSubmit();
-    }
-  }
-
-  handleSubmit = () => {
-    const values = this.state.values;
-    this.props.onSubmit(values);
+  loadCategories = async(inputValue) => {
+    return (await api('GET', '/users/categories', {}, {
+      Authorization: `Bearer ${this.props.token}`
+    })).data
+      .filter(item => item.startsWith(inputValue))
+      .map(item => ({label: item, value: item}));
   };
 
   render() {
-    const {values} = this.state;
     const options = [
       {value: 1, label: 'Coucou'}
     ];
 
+    console.log(this.props);
+
     return (
-      <Form size='large' onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.props.handleSubmit} className="custom-form">
+        <FormComponent.MainErrors {...this.props} />
         <Segment>
-          <DatePicker
-            selected={values && values.date ? values.date.toDate() : moment().toDate()}
-            dateFormat="d/MM/YYYY"
-            onChange={(value) => this.onChange({target: {name: 'date', value: moment(new Date(value))}})}
-          />
-          <Form.Input
-            onChange={this.onChange}
-            name="label"
-            value={values && values.label ? values.label : ''}
-            fluid
-            placeholder='Label'
-          />
-          <Creatable
-            value={values && values.tag ? values.tags.map((tag, index) => {
-              return {value: index, label: tag}
-            }) : []}
-            onChange={(value) => this.onChange({target: {name: 'tags', value: value.map((val) => val.label)}})}
-            isMulti
-            options={options}
-          />
-          <Form.Group width="equal" unstackable with={2}>
-            <Form.Field>
-              <label htmlFor="credit">Credit</label>
-              <Input
-                onChange={this.onChange}
-                name="credit"
-                id="credit"
-                value={values && values.credit ? values.credit : 0}
-                placeholder='Credit'
-              />
-            </Form.Field>
-            <Form.Field>
-              <label htmlFor="debit">Debit</label>
-              <Input
-                onChange={this.onChange}
-                id="debit"
-                name="debit"
-                value={values && values.debit ? values.debit : 0}
-                placeholder='Debit'
-              />
-            </Form.Field>
+          <Form.Group unstackable>
+            <Field
+              name="date"
+              component={FormComponent.Date}
+              width={5}
+              placeHolder='Date'
+            />
+            <Field
+              name="label"
+              component={FormComponent.Input}
+              type="text"
+              width={11}
+              fluid
+              icon='pencil alternate'
+              iconPosition='left'
+              placeHolder='Label'
+            />
           </Form.Group>
-          <Form.Input
-            onChange={this.onChange}
-            name="category"
-            value={values && values.category ? values.category : ''}
-            fluid
-            placeholder='Category'
-          />
+          <div style={{
+            marginBottom: '1rem'
+          }}>
+            <Field
+              name="tags"
+              component={FormComponent.SelectCreatable}
+              isMulti
+              formatChange={(val) => val.map(item => item.value)}
+            />
+          </div>
+          <Form.Group>
+            <Field
+              name="credit"
+              component={FormComponent.Input}
+              type="number"
+              placeholder="Crédit"
+              icon="euro"
+              width={8}
+            />
+            <Field
+              name="debit"
+              component={FormComponent.Input}
+              type="number"
+              placeholder="Débit"
+              icon="euro"
+              width={8}
+            />
+          </Form.Group>
+          <div style={{
+            marginBottom: '1rem'
+          }}>
+            <Field
+              name="category"
+              component={FormComponent.SelectCreatable}
+              load={this.loadCategories}
+              formatChange={(value) => value.value}
+            />
+          </div>
         </Segment>
       </Form>
     );
   }
 }
 
-export default OperationForm;
+export default connect(
+  (state) => ({
+    token: state.user.token,
+  }))
+(reduxForm({
+  form: formName,
+  onSubmit: submit,
+})(OperationForm));

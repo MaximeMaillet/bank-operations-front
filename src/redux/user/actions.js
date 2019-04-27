@@ -25,6 +25,7 @@ const logged_out = () => {
 
 const logout = () => {
 	return async (dispatch) => {
+		console.log('coucou')
 		localStorage.removeItem('token');
 		dispatch(logged_out());
 	}

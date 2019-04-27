@@ -7,7 +7,6 @@ import {Link} from "react-router-dom";
 class UnauthorizedComponent extends Component {
 
 	render() {
-		let mobile = false;
 		return (
 			<Responsive>
 				<Container text>

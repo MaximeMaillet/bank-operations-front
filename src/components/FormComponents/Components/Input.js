@@ -2,23 +2,15 @@ import React from "react";
 import { Form, Message } from 'semantic-ui-react'
 
 export default function(field) {
-	return (
-		<div>
-			<Form.Input
-				error={!field.meta.valid}
-				{...field.input}
-				type={field.type || 'text'}
-				placeholder={field.placeholder}
-			/>
-			<Message
-				error
-				size='tiny'
-				hidden={field.meta.valid}
-				header={field.meta.error}
-				style={{
-					marginBottom: '1em'
-				}}
-			/>
-		</div>
-	);
+	const {meta, input, type, placeHolder, width, ...rest} = field;
+	return <Form.Field width={width}>
+		<Form.Input
+			error={!field.meta.valid}
+			{...input}
+			type={type || 'text'}
+			placeholder={placeHolder}
+			{...rest}
+		/>
+		<div className={`form-input-errors ${!meta.valid ? 'visible':'hidden'}`}>{meta.error}</div>
+	</Form.Field>;
 }
