@@ -1,31 +1,12 @@
 import React, { Component } from 'react';
 import 'semantic-ui-css/semantic.min.css'
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
-import api from '../../../lib/api';
+import {connect} from "react-redux";
+import { Field, reduxForm } from 'redux-form'
+import submit from './submit';
+import FormComponent from '../../FormComponents/form'
 
-class App extends Component {
-
-	onChange = (value) => {
-		const state = {...this.state};
-		state[value.target.name] = value.target.value;
-		this.setState(state);
-	};
-
-	onSubmit = async() => {
-		try {
-			const response = await api('POST', '/users/login', {
-				username: this.state.username,
-				password: this.state.password,
-			});
-
-			localStorage.setItem('token', response.data.token);
-			this.props.onLogin(true);
-		} catch(e) {
-			console.error(e);
-			this.props.onLogin(false);
-		}
-	};
-
+class LoginForm extends Component {
 	render() {
 		return (
 			<Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
@@ -33,37 +14,49 @@ class App extends Component {
 					<Header as='h2' color='teal' textAlign='center'>
 						<Image src='/logo.png' /> Log-in to your account
 					</Header>
-					<Form size='large' onSubmit={this.onSubmit}>
+					<Message
+						error
+						hidden={!this.props.error}
+						header={this.props.error}
+					/>
+					<Form error={!!this.props.error} size='large' onSubmit={this.props.handleSubmit}>
 						<Segment stacked>
-							<Form.Input
-								onChange={this.onChange}
+							<Field
 								name="username"
-								fluid icon='user'
+								component={FormComponent.Input}
+								type="text"
+								fluid
+								icon='user'
 								iconPosition='left'
-								placeholder='Username'
+								placeHolder='Username'
 							/>
-							<Form.Input
-								onChange={this.onChange}
+							<Field
 								name="password"
+								component={FormComponent.Input}
+								type="password"
 								fluid
 								icon='lock'
 								iconPosition='left'
 								placeholder='Password'
-								type='password'
 							/>
-
-							<Button color='teal' fluid size='large'>
+							<Button color='teal' fluid size='large' type="submit">
 								Login
 							</Button>
 						</Segment>
 					</Form>
-					<Message>
-						New to us? <a href='#'>Sign Up</a>
-					</Message>
 				</Grid.Column>
 			</Grid>
 		);
 	}
 }
 
-export default App;
+export default connect(
+	(state) => ({
+		isLogged: state.user.isLogged,
+		user: state.user.user,
+		errors: state.user.errors,
+	})
+)(reduxForm({
+	form: 'loginForm',
+	onSubmit: submit,
+})(LoginForm));

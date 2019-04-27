@@ -49,8 +49,8 @@ class OperationForm extends Component {
           />
           <Form.Input
             onChange={this.onChange}
-            name="label_str"
-            value={values && values.label_str ? values.label_str : ''}
+            name="label"
+            value={values && values.label ? values.label : ''}
             fluid
             placeholder='Label'
           />

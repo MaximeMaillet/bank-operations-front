@@ -7,7 +7,8 @@ import RemoveModal from "../../components/Modals/RemoveModal/RemoveModal";
 import EditModal from "../../components/Modals/EditModal/EditModal";
 import {Redirect} from "react-router-dom";
 import AddOperationModal from "../../components/Modals/AddOperationModal/AddOperationModal";
-import {TopHeader} from "../../components/TopHeader/TopHeader";
+import TopHeader from "../../components/TopHeader/TopHeader";
+import shouldLogged from "../../hoc/shouldLogged";
 // import Pagination from "../../components/Pagination/Pagination";
 
 class Dashboard extends Component {
@@ -187,7 +188,7 @@ class Dashboard extends Component {
 									    {operation.category}
 								    </Table.Cell>
 								    <Table.Cell>
-									    <div className="cut-too-long">{operation.label_str}</div>
+									    <div className="cut-too-long">{operation.label}</div>
 									    {operation.tags.map((tag, index) => {
 										    return (
 											    <Label key={index} as='span' tag>{tag}</Label>
@@ -235,4 +236,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default shouldLogged(Dashboard);

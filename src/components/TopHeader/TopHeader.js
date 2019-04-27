@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { Container, Header, Icon, Label, Button, Table, Pagination, Menu, Segment, Responsive } from 'semantic-ui-react'
+import {connect} from "react-redux";
+import shouldLogged from "../../hoc/shouldLogged";
 
-export class TopHeader extends Component {
+class TopHeader extends Component {
 
 	render() {
+		console.log(this.props);
 		let fixed = false;
 
 		return (
@@ -34,7 +37,7 @@ export class TopHeader extends Component {
 						</Menu.Item>
 						<Menu.Item position='right'>
 							<Button as='a' inverted={!fixed}>
-								Log in
+								{this.props.user.username}
 							</Button>
 							<Button as='a' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
 								Sign Up
@@ -46,3 +49,5 @@ export class TopHeader extends Component {
 		);
 	}
 }
+
+export default connect((state) => ({user: state.user.user}))(TopHeader);
