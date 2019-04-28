@@ -5,10 +5,10 @@ const initialState = {
 	loaded: false,
 	operations: [],
 	pagination: {},
+	reload: 0,
 };
 
 export default function(state = initialState, actions) {
-
 	switch(actions.type) {
 		case TYPE.START_LOADING:
 			return {
@@ -39,6 +39,11 @@ export default function(state = initialState, actions) {
 				...state,
 				operation: actions.operation,
 			};
+		case TYPE.OPERATION_RELOAD:
+			return {
+				...state,
+				reload: state.reload + 1,
+			}
 	}
 	return state;
 }

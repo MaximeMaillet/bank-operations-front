@@ -15,10 +15,6 @@ class AddOperationModal extends Component {
 	handleClose = () => this.setState({ modalOpen: false });
 	handleOpen = () => this.setState({ modalOpen: true });
 
-	add = async() => {
-		this.setState({submit: true});
-	};
-
 	render() {
 		const SubmitButton = createSubmit(formName, <Button color='green'><Icon name='checkmark' /> Add</Button>);
 		return (
@@ -34,11 +30,8 @@ class AddOperationModal extends Component {
 						<OperationForm
 							initialValues={{
 								date: moment().toDate(),
-								label: 'putaing',
-								category: 'famille',
 							}}
-							onSubmit={this.onSubmit}
-							submit={this.state.submit}
+							onSubmitSuccess={this.handleClose}
 						/>
 					</Modal.Description>
 				</Modal.Content>

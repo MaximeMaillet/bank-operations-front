@@ -20,7 +20,7 @@ export default function shouldLogged(BaseComponent) {
 
 		load = (location) =>{
 			const searchParams = new URLSearchParams(location.search);
-			this.props.loadOperations(this.props.token, {
+			this.props.loadOperations({
 				page: searchParams.get('page') || 1,
 				offset: searchParams.get('offset') || 20,
 			});
@@ -54,14 +54,14 @@ export default function shouldLogged(BaseComponent) {
 
 	return connect(
 		(state) => ({
-			token: state.user.token,
+			reload: state.operations.reload,
 			loaded: state.operations.loaded,
 			operations: state.operations.operations,
 			pagination: state.operations.pagination,
 			error: state.operations.error,
 		}),
 		(dispatch) => ({
-			loadOperations: (token, data) => dispatch(actionsOperation.load(token, data))
+			loadOperations: (data) => dispatch(actionsOperation.load(data))
 		})
 	)(withRouter(OperationsComponent));
 }

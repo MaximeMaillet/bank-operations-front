@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Button, Form, Header, Icon, Modal, Segment} from 'semantic-ui-react'
-import OperationForm from "../../Forms/OperationForm/OperationForm";
+import {Button, Form, Header, Icon, Modal} from 'semantic-ui-react'
+import OperationForm, {formName} from "../../Forms/OperationForm/OperationForm";
+import createSubmit from "../../../hoc/createSubmit";
 
 class EditModal extends Component {
   constructor(props) {
@@ -25,7 +26,8 @@ class EditModal extends Component {
 
   render() {
     const {operation} = this.props;
-    const {values} = this.state;
+    const SubmitButton = createSubmit(formName, <Button color='green'><Icon name='checkmark' /> Edit</Button>);
+
     return (
       <Modal
         trigger={<Button circular color="blue" icon='edit' onClick={this.handleOpen} />}
@@ -35,17 +37,21 @@ class EditModal extends Component {
         <Header icon='archive' content='Edit' />
         <Modal.Content>
           <Modal.Description>
-            <Header>{operation.label_str}</Header>
-            <OperationForm operation={operation} onSubmit={this.onSubmit} submit={this.state.submit} />
+            <Header>{operation.label}</Header>
+            <OperationForm
+              initialValues={{
+                ...operation,
+                date: operation.date.toDate(),
+                tags: operation.tags.map((item) => ({name: item, value: item}))
+              }}
+            />
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
           <Button color='red' onClick={this.handleClose}>
             <Icon name='remove' /> Cancel
           </Button>
-          <Button color='green' onClick={this.edit}>
-            <Icon name='checkmark' /> Edit
-          </Button>
+          <SubmitButton />
         </Modal.Actions>
       </Modal>
     );

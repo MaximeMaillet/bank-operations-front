@@ -7,6 +7,7 @@ export const TYPE = {
 	OPERATION_ADDED: 'Operation::operation_added',
 	START_LOADING: 'Operation::start_loading',
 	STOP_LOADING: 'Operation::stop_loading',
+	OPERATION_RELOAD: 'Operation::operation_reload',
 };
 
 const operationLoaded = (operations, pagination) => {
@@ -43,7 +44,7 @@ const added= (data) => {
 	}
 };
 
-const load = (token, data) => {
+const load = (data) => {
 	return async (dispatch) => {
 		try {
 			dispatch(startLoading());
@@ -71,6 +72,14 @@ const load = (token, data) => {
 	}
 };
 
+const reLoad = () => {
+	console.log('reload');
+	console.log('what')
+	return {
+		type: TYPE.OPERATION_RELOAD,
+	}
+};
+
 const add = (data) => {
 	return async (dispatch) => {
 		try {
@@ -86,6 +95,7 @@ const add = (data) => {
 };
 
 export default {
+	reLoad,
 	load,
 	add,
 	added,

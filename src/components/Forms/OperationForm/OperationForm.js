@@ -21,12 +21,6 @@ class OperationForm extends Component {
   };
 
   render() {
-    const options = [
-      {value: 1, label: 'Coucou'}
-    ];
-
-    console.log(this.props);
-
     return (
       <Form onSubmit={this.props.handleSubmit} className="custom-form">
         <FormComponent.MainErrors {...this.props} />
@@ -56,7 +50,6 @@ class OperationForm extends Component {
               name="tags"
               component={FormComponent.SelectCreatable}
               isMulti
-              formatChange={(val) => val.map(item => item.value)}
             />
           </div>
           <Form.Group>

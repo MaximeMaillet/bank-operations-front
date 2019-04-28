@@ -13,9 +13,10 @@ class OperationsTable extends Component {
 	onPaginationChanged = (e, {activePage}) => {
 		const {pathname, search} = this.props.location;
 		const searchParams = new URLSearchParams(search);
+		const offset = searchParams.get('offset');
 		this.props.history.push({
 			pathname,
-			search: `?page=${activePage}&offset=${searchParams.get('offset')}`
+			search: `?page=${activePage}&offset=${offset ? offset : 20}`
 		})
 	};
 
@@ -42,8 +43,8 @@ class OperationsTable extends Component {
 				<Table.Body>
 					{operations.map((operation, index) => {
 						let isLabel = false;
-						if(operation.date.startOf('month') < firstDayOfMonth) {
-							firstDayOfMonth = moment(operation.date).startOf('month');
+						if(moment(operation.date).startOf('month') < firstDayOfMonth) {
+							firstDayOfMonth = operation.date.startOf('month');
 							isLabel = true;
 						}
 
@@ -61,20 +62,15 @@ class OperationsTable extends Component {
 									<div className="cut-too-long">{operation.label}</div>
 									{operation.tags.map((tag, index) => {
 										return (
-											<Label key={index} as='span' tag>{tag}</Label>
+											<Label key={index} as='span' color="teal">{tag}</Label>
 										);
 									})}
 								</Table.Cell>
 								<Table.Cell>{operation.credit}</Table.Cell>
 								<Table.Cell>{operation.debit}</Table.Cell>
 								<Table.Cell className="nowrap">
-									<EditModal
-										operation={operation}
-										onEdit={this.onEdit}
-									/>
-									<RemoveModal
-										onYes={() => this.onRemove(operation.id)}
-									/>
+									<EditModal operation={operation} />
+									<RemoveModal operation={operation} />
 								</Table.Cell>
 							</Table.Row>
 						);
