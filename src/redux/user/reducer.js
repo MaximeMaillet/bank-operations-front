@@ -1,5 +1,4 @@
 import {TYPE} from './actions';
-import jwt from "jwt-decode";
 
 const initialState = {
 	isLogged: false,
@@ -7,18 +6,6 @@ const initialState = {
 };
 
 export default function(state = initialState, actions) {
-	const token = localStorage.getItem('token');
-	// if(token) {
-	// 	state.token = token;
-	// 	const decoded = jwt(token);
-	// 	const dateNow = new Date();
-	// 	const dateExp = new Date(decoded.exp*1000);
-	// 	if(dateExp >= dateNow) {
-	// 		state.isLogged = true;
-	// 		state.user = decoded.data;
-	// 	}
-	// }
-
 	switch(actions.type) {
 		case TYPE.LOG_IN:
 			return {
@@ -31,7 +18,7 @@ export default function(state = initialState, actions) {
 				...state,
 				isLogged: actions.isLogged,
 			};
+		default:
+			return state;
 	}
-
-	return state;
 }

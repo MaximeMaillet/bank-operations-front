@@ -1,8 +1,7 @@
 import {TYPE} from "./actions";
-import moment from 'moment';
 
 const initialState = {
-	isLoaded: false,
+	loading: false,
 	loaded: false,
 	operations: [],
 	pagination: {},
@@ -15,72 +14,33 @@ export default function(state = initialState, actions) {
 		case TYPE.START_LOADING:
 			return {
 				...state,
-				loading: true,
-				loaded: false,
+				loading: actions.loading,
 			};
 		case TYPE.STOP_LOADING:
 			return {
 				...state,
-				loading: false,
+				loading: actions.loading,
 			};
-		case TYPE.OPERATION_LOADED:
-
-			const total = {credit:0, debit: 0};
-			if(actions.operations && actions.operations.length > 0) {
-				total.debit = Math.round(
-					actions.operations
-						.map(item => !isNaN(item.debit) ? item.debit *-1: 0)
-						.reduce((acc, current) => {
-							if(!isNaN(current)) {
-								return acc + current;
-							}
-							return acc;
-						})
-					* 100
-				) / 100;
-
-				total.credit = Math.round(
-					actions.operations
-						.map(item => !isNaN(item.credit) ? item.credit : 0)
-						.reduce((acc, current) => {
-							if(!isNaN(current)) {
-								return acc + current;
-							}
-							return acc;
-						})
-					* 100
-				) / 100;
-			}
-
-			return {
-				...state,
-				loaded: true,
-				operations: actions.operations
-				.map((ope) => {
-					return {
-						...ope,
-						date: moment(ope.date),
-					}
-				}),
-				pagination: actions.pagination,
-				total,
-			};
-		case TYPE.OPERATION_FAIL:
+		case TYPE.FAILED:
 			return {
 				...state,
 				error: actions.error,
-				loaded: true,
+				loaded: actions.loaded,
 			};
-		case TYPE.OPERATION_ADDED:
+		case TYPE.LOADED:
 			return {
 				...state,
-				operation: actions.operation,
+				loaded: actions.loaded,
+				operations: actions.operations,
+				pagination: actions.pagination,
+				total: actions.total,
 			};
-		case TYPE.OPERATION_RELOAD:
+		case TYPE.RELOAD:
 			return {
 				...state,
-				reload: state.reload + 1,
-			}
+				loaded: actions.loaded,
+			};
+		default:
+			return state;
 	}
-	return state;
 }

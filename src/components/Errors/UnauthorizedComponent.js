@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import {Button, Container, Form, Grid, Header, Icon, Responsive, Segment, Message} from 'semantic-ui-react'
-import TopHeader from "../TopHeader/TopHeader";
+import {Container, Responsive, Message} from 'semantic-ui-react'
 import {Link} from "react-router-dom";
-
 
 class UnauthorizedComponent extends Component {
 

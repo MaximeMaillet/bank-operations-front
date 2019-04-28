@@ -25,6 +25,7 @@ class OperationForm extends Component {
       <Form onSubmit={this.props.handleSubmit} className="custom-form">
         <FormComponent.MainErrors {...this.props} />
         <Segment>
+
           <Form.Group unstackable>
             <Field
               name="date"
@@ -87,10 +88,10 @@ class OperationForm extends Component {
 }
 
 export default connect(
-  (state) => ({
-    token: state.user.token,
-  }))
+  (state) => ({token: state.user.token})
+)
 (reduxForm({
   form: formName,
   onSubmit: submit,
-})(OperationForm));
+})
+(OperationForm));

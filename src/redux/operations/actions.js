@@ -2,51 +2,49 @@ import api from "../../lib/api";
 import moment from 'moment';
 
 export const TYPE = {
-	OPERATION_LOADED: 'Operation::operation_loaded',
-	OPERATION_FAIL: 'Operation::operation_fail',
-	OPERATION_ADDED: 'Operation::operation_added',
-	START_LOADING: 'Operation::start_loading',
-	STOP_LOADING: 'Operation::stop_loading',
-	OPERATION_RELOAD: 'Operation::operation_reload',
-};
-
-const operationLoaded = (operations, pagination) => {
-	return {
-		type: TYPE.OPERATION_LOADED,
-		operations,
-		pagination,
-	}
+	START_LOADING: 'OperationReducer::start_loading',
+	STOP_LOADING: 'OperationReducer::stop_loading',
+	LOADED: 'OperationReducer::loaded',
+	RELOAD: 'OperationReducer::reload',
+	FAILED: 'OperationReducer::failed',
 };
 
 const startLoading = () => {
 	return {
 		type: TYPE.START_LOADING,
+		loading: true,
 	}
 };
 
 const stopLoading = () => {
 	return {
-		type: TYPE.STOP_LOADING
+		type: TYPE.STOP_LOADING,
+		loading: false,
 	}
 };
 
-const operationFailed = (error) => {
+const loaded = (operations, total, pagination) => {
 	return {
-		type: TYPE.OPERATION_FAIL,
+		type: TYPE.LOADED,
+		operations,
+		pagination,
+		total,
+		loaded: true,
+	}
+};
+
+const failed = (error) => {
+	return {
+		type: TYPE.FAILED,
 		error,
+		loaded: true,
 	};
 };
 
-const added= (data) => {
+const reload = () => {
 	return {
-		type: TYPE.OPERATION_ADDED,
-		operation: data,
-	}
-};
-
-const reLoad = () => {
-	return {
-		type: TYPE.OPERATION_RELOAD,
+		type: TYPE.RELOAD,
+		loaded: false,
 	}
 };
 
@@ -56,47 +54,61 @@ const load = (data) => {
 			dispatch(startLoading());
 			const response = await api('GET', '/users/operations', data);
 			const {operations, pagination: {page, lastPage, pageSize: offset}} = response.data;
-			dispatch(operationLoaded(operations, {page, offset, lastPage}));
+
+			const total = {credit:0, debit: 0};
+			if(operations && operations.length > 0) {
+				total.debit = Math.round(
+					operations
+						.map(item => !isNaN(item.debit) ? item.debit *-1: 0)
+						.reduce((acc, current) => {
+							if(!isNaN(current)) {
+								return acc + current;
+							}
+							return acc;
+						})
+					* 100
+				) / 100;
+
+				total.credit = Math.round(
+					operations
+						.map(item => !isNaN(item.credit) ? item.credit : 0)
+						.reduce((acc, current) => {
+							if(!isNaN(current)) {
+								return acc + current;
+							}
+							return acc;
+						})
+					* 100
+				) / 100;
+			}
+
+			dispatch(loaded(
+				operations.map((ope) => {
+					return {
+						...ope,
+						date: moment(ope.date),
+					}
+				}), total, {page, offset, lastPage}));
 		} catch(e) {
-			dispatch(operationFailed(e.data));
+			dispatch(failed(e));
 		} finally {
 			dispatch(stopLoading());
 		}
 	}
 };
 
-const loadWithDate = (data) => {
-	return async(dispatch) => {
-		try {
-			dispatch(startLoading());
-			const response = await api('GET', '/users/operations', data);
-			dispatch(operationLoaded(response.data));
-		} catch(e) {
-			dispatch(operationFailed(e.data));
-		} finally {
-			dispatch(stopLoading());
-		}
-	}
-};
-
-const add = (data) => {
+const edit = (data) => {
 	return async (dispatch) => {
 		try {
-			dispatch(startLoading());
-			const response = await api('POST', '/users/operations', data);
-			dispatch(added(response.data));
+			dispatch(startLoading())
 		} catch(e) {
 
-		} finally {
-			dispatch(stopLoading());
 		}
 	}
-};
+}
 
 export default {
-	reLoad,
 	load,
-	loadWithDate,
-	add,
-	added,
+	reload,
+	edit,
 }

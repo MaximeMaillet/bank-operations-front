@@ -1,30 +1,28 @@
 import React, {Component} from 'react';
 import {Label, Table, Pagination, Icon} from "semantic-ui-react";
 import moment from 'moment';
-import EditModal from "../../Modals/EditModal/EditModal";
-import RemoveModal from "../../Modals/RemoveModal/RemoveModal";
-import withLoading from "../../../hoc/withLoading";
+import EditOperationModal from "../../Modals/EditOperationModal/EditOperationModal";
+import RemoveModal from "../../Modals/RemoveOperationModal/RemoveOperationModal";
 import withOperations from "../../../hoc/withOperations";
-import OperationsTableLoading from "../OperationsTableLoading/OperationsTableLoading";
 import {withRouter} from "react-router-dom";
 import get from 'lodash.get';
+import queryString from "query-string";
 
 class OperationsTable extends Component {
 
 	onPaginationChanged = (e, {activePage}) => {
 		const {pathname, search} = this.props.location;
-		const searchParams = new URLSearchParams(search);
-		const offset = searchParams.get('offset');
+		const params = queryString.parse(search);
+		params.page = activePage;
 		this.props.history.push({
 			pathname,
-			search: `?page=${activePage}&offset=${offset ? offset : 20}`
+			search: queryString.stringify(params)
 		})
 	};
 
 	render() {
 		const { operations, hasPagination, pagination} = this.props;
 		let firstDayOfMonth = moment().startOf('month');
-		let totalCredit = 0, totalDebit = 0;
 		if(operations.length > 0){
 			firstDayOfMonth = moment(operations[0].date).startOf('month');
 		}
@@ -71,7 +69,7 @@ class OperationsTable extends Component {
 								<Table.Cell>{operation.credit}</Table.Cell>
 								<Table.Cell>{operation.debit}</Table.Cell>
 								<Table.Cell className="nowrap">
-									<EditModal operation={operation} />
+									<EditOperationModal operation={operation} />
 									<RemoveModal operation={operation} />
 								</Table.Cell>
 							</Table.Row>
@@ -109,4 +107,4 @@ class OperationsTable extends Component {
 	}
 }
 
-export default withRouter(withLoading(withOperations(OperationsTable), OperationsTableLoading));
+export default withRouter(withOperations(OperationsTable));

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Icon, Label, Statistic, Step, Dropdown, Placeholder} from "semantic-ui-react";
+import {Label, Step, Dropdown, Placeholder} from "semantic-ui-react";
 
 import './stats-month.scss'
 

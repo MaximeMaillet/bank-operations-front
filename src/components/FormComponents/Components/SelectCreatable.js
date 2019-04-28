@@ -1,5 +1,5 @@
 import React from 'react';
-import {Message, Form} from "semantic-ui-react";
+import {Form} from "semantic-ui-react";
 import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
 
 const handleLoad = (input, callback) => {

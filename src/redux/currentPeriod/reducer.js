@@ -2,7 +2,7 @@ import moment from 'moment';
 import {TYPE} from "./actions";
 
 const initialState = {
-	from: moment().startOf('month').startOf('month'),
+	from: moment().startOf('month'),
 	to: moment().add(1, 'months').startOf('month'),
 };
 
@@ -14,5 +14,6 @@ export default (state = initialState, actions) => {
 			to: actions.to,
 		}
 	}
+
 	return state;
 }

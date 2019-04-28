@@ -42,16 +42,11 @@ const reload= () => {
 	}
 };
 
-const loadStatistics = (from, to) => {
+const loadStatistics = (data) => {
 	return async (dispatch) => {
 		try {
 			dispatch(startLoading());
-
-			const response = await api('GET', '/users/statistics', {
-				from: from.format('YYYY-MM-DD[T]HH:mm:ss'),
-				to: to.format('YYYY-MM-DD[T]HH:mm:ss')
-			});
-
+			const response = await api('GET', '/users/statistics', data);
 			dispatch(loaded(response.data));
 		} catch(e) {
 			dispatch(failed(e));

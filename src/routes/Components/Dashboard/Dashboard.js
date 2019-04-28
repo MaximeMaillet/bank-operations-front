@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Container, Header, Icon, Responsive, Step, Statistic} from 'semantic-ui-react'
+import {Button, Container, Header, Icon, Responsive} from 'semantic-ui-react'
 import AddOperationModal from "../../../components/Modals/AddOperationModal/AddOperationModal";
 import TopHeader from "../../../components/TopHeader/TopHeader";
 import shouldLogged from "../../../hoc/shouldLogged";

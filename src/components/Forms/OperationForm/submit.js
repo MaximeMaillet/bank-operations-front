@@ -11,15 +11,16 @@ export default function(data, dispatch) {
 		_data.tags = _data.tags.map((item) => item.value);
 	}
 
-	let promise = api('POST', '/users/operations', _data);
-
+	let promise = null;
 	if(data.id) {
 		promise = api('PATCH', `/users/operations/${data.id}`, _data);
+	} else {
+		promise = api('POST', '/users/operations', _data);
 	}
 
 	return promise
 		.then((response) => {
-			dispatch(actionsOperation.reLoad());
+			dispatch(actionsOperation.reload());
 			dispatch(actionsStats.reload());
 			return response.data;
 		})

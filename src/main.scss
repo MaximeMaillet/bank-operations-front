@@ -10,6 +10,8 @@ $red-dark: #912d2b;
 
 .nowrap {
   white-space: nowrap !important;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .cut-too-long {

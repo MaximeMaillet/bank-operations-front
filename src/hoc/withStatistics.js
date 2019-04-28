@@ -2,10 +2,10 @@ import React from 'react';
 import {connect} from "react-redux";
 import actionsStats from '../redux/statistics/actions';
 import {withRouter} from "react-router-dom";
-import OperationsTableNoResults from "../components/Operations/OperationsTableNoResults/OperationsTableNoResults";
 import {toast} from "react-semantic-toasts";
 import moment from 'moment';
 import StatsMonthLoading from "../components/StatsMonth/StatsMonthLoading";
+import queryString from "query-string";
 
 export default function withStatistics(BaseComponent) {
 	class StatisticsComponent extends React.PureComponent {
@@ -19,16 +19,18 @@ export default function withStatistics(BaseComponent) {
 
 		componentWillReceiveProps(nextProps, nextContext) {
 			if(!nextProps.loading) {
-				if(nextProps.from !== this.props.from) {
-					this.props.load(nextProps.from, nextProps.to);
-				}
-
+				const params = queryString.parse(nextProps.location.search);
+				delete params.page;
+				delete params.offset;
 				if(!nextProps.loaded) {
-					this.props.load(nextProps.from, nextProps.to);
+					this.props.loadStatistics(params);
 				}
 
-				if(nextProps.reload !== this.props.reload) {
-					this.props.load(nextProps.from, nextProps.to);
+				if(
+					(params.from && moment(this.props.from).diff(moment(params.from)) !== 0 )||
+					(params.to && moment(this.props.from).diff(moment(params.from)) !== 0)
+				) {
+					this.props.loadStatistics(params);
 				}
 
 				if(nextProps.error) {
@@ -45,7 +47,12 @@ export default function withStatistics(BaseComponent) {
 		}
 
 		componentDidMount() {
-			this.props.load(this.props.from, this.props.to);
+			if(!this.props.loaded) {
+				const params = queryString.parse(this.props.location.search);
+				delete params.page;
+				delete params.offset;
+				this.props.loadStatistics(params);
+			}
 		}
 
 		generatePeriod = (from, to) => {
@@ -69,8 +76,7 @@ export default function withStatistics(BaseComponent) {
 				return <StatsMonthLoading />;
 			}
 
-			const {data: {credit, debit, total}, from} = this.props;
-
+			const {credit, debit, total, from} = this.props;
 			return <BaseComponent
 				{...this.props}
 				from={from}
@@ -89,11 +95,13 @@ export default function withStatistics(BaseComponent) {
 			to: state.currentPeriod.to,
 			loading: state.statistics.loading,
 			loaded: state.statistics.loaded,
-			data: state.statistics.data,
+			credit: state.statistics.credit,
+			debit: state.statistics.debit,
+			total: state.statistics.total,
 			error: state.statistics.error,
 		}),
 		(dispatch) => ({
-			load: (from, to) => dispatch(actionsStats.loadStatistics(from, to)),
+			loadStatistics: (data) => dispatch(actionsStats.loadStatistics(data)),
 		})
-	)(StatisticsComponent);
+	)(withRouter(StatisticsComponent));
 }

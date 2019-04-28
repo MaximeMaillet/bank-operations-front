@@ -4,6 +4,10 @@ import actionsOperation from '../redux/operations/actions';
 import {withRouter} from "react-router-dom";
 import OperationsTableNoResults from "../components/Operations/OperationsTableNoResults/OperationsTableNoResults";
 import {toast} from "react-semantic-toasts";
+import queryString from "query-string";
+import actionsCurrentPeriod from "../redux/currentPeriod/actions";
+import moment from 'moment';
+import OperationsTableLoading from "../components/Operations/OperationsTableLoading/OperationsTableLoading";
 
 export default function withOperations(BaseComponent) {
 	class OperationsComponent extends React.PureComponent {
@@ -15,26 +19,33 @@ export default function withOperations(BaseComponent) {
 		}
 
 		componentWillReceiveProps(nextProps, nextContext) {
-			if(nextProps.from !== this.props.from) {
-				this.loadWithDate(nextProps.from.format('YYYY-MM-DD[T]HH:mm:ss'), nextProps.to.format('YYYY-MM-DD[T]HH:mm:ss'));
-			} else {
-				this.load(nextProps.location);
+			if(!nextProps.loading){
+				if(!nextProps.loaded) {
+					this.load(nextProps.location);
+				}
+
+				if(nextProps.location.search !== this.props.location.search) {
+					this.load(nextProps.location);
+				}
 			}
 		}
 
-		loadWithDate = (from, to) => {
-			this.props.loadWithDate({from, to});
-		};
-
-		load = (location) =>{
-			const searchParams = new URLSearchParams(location.search);
-			this.props.loadOperations({
-				page: searchParams.get('page') || 1,
-				offset: searchParams.get('offset') || 20,
-			});
+		load = (location) => {
+			const params = queryString.parse(location.search);
+			this.props.loadOperations(params);
+			if(
+				(params.from && this.props.from.diff(moment(params.from)) !== 0) ||
+				(params.to && this.props.to.diff(moment(params.to)) !== 0)
+			) {
+				this.props.changePeriod(moment(params.from), moment(params.to));
+			}
 		};
 
 		render() {
+			if(this.props.loading || !this.props.loaded) {
+				return <OperationsTableLoading />;
+			}
+
 			if(this.props.loaded) {
 				const { operations, pagination, total, error } = this.props;
 				if(!error) {
@@ -66,6 +77,7 @@ export default function withOperations(BaseComponent) {
 		(state) => ({
 			reload: state.operations.reload,
 			loaded: state.operations.loaded,
+			loading: state.operations.loading,
 			operations: state.operations.operations,
 			pagination: state.operations.pagination,
 			total: state.operations.total,
@@ -75,7 +87,7 @@ export default function withOperations(BaseComponent) {
 		}),
 		(dispatch) => ({
 			loadOperations: (data) => dispatch(actionsOperation.load(data)),
-			loadWithDate: (data) => dispatch(actionsOperation.loadWithDate(data))
+			changePeriod: (from, to) => dispatch(actionsCurrentPeriod.changePeriod(from, to)),
 		})
 	)(withRouter(OperationsComponent));
 }

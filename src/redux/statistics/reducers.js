@@ -1,11 +1,9 @@
 import {TYPE} from './actions'
 
 const initialState = {
-	data: {
-		credit: 0,
-		debit:0,
-		total:0,
-	},
+	credit: 0,
+	debit:0,
+	total:0,
 	loading: false,
 	loaded: false,
 };
@@ -27,16 +25,16 @@ export default (state = initialState, actions) => {
 				...state,
 				error: actions.error,
 				loaded: true,
-				data: {
-					credit: 'N/A',
-					debit: 'N/A',
-					total: 'N/A',
-				}
+				credit: 'N/A',
+				debit: 'N/A',
+				total: 'N/A',
 			};
 		case TYPE.LOADED:
 			return {
 				...state,
-				data: actions.data,
+				credit: actions.data.credit,
+				debit: actions.data.debit,
+				total: actions.data.total,
 				loaded: true,
 			};
 		case TYPE.RELOAD:
@@ -44,6 +42,7 @@ export default (state = initialState, actions) => {
 				...state,
 				loaded: false,
 			}
+		default:
+				return state;
 	}
-	return state;
 }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Header, Icon, Label, Button, Table, Pagination, Menu, Segment, Responsive } from 'semantic-ui-react'
+import { Container, Button, Menu, Segment } from 'semantic-ui-react'
 import {connect} from "react-redux";
-import shouldLogged from "../../hoc/shouldLogged";
 
 class TopHeader extends Component {
 
@@ -31,16 +30,8 @@ class TopHeader extends Component {
 					}}
 				>
 					<Container>
-						<Menu.Item as='a' to="/dashboard">
+						<Menu.Item active as='a' to="/dashboard">
 							Dashboard
-						</Menu.Item>
-						<Menu.Item position='right'>
-							<Button as='a' inverted={!fixed}>
-								{this.props.user.username}
-							</Button>
-							<Button as='a' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
-								Sign Up
-							</Button>
 						</Menu.Item>
 					</Container>
 				</Menu>

@@ -1,5 +1,3 @@
-import api from "../../lib/api";
-
 const logged_fail = (error) => {
 	return {
 		type: TYPE.LOG_FAIL,
