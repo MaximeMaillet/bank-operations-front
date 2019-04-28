@@ -1,44 +1,20 @@
 import React, { Component } from 'react';
-import {Button, Container, Header, Icon, Responsive} from 'semantic-ui-react'
+import {Button, Container, Header, Icon, Responsive, Step, Statistic} from 'semantic-ui-react'
 import AddOperationModal from "../../../components/Modals/AddOperationModal/AddOperationModal";
 import TopHeader from "../../../components/TopHeader/TopHeader";
 import shouldLogged from "../../../hoc/shouldLogged";
 import OperationsTable from "../../../components/Operations/OperationsTable/OperationsTable";
 
 import './dashboard.scss';
+import StatsMonth from "../../../components/StatsMonth/StatsMonth";
 
 class Dashboard extends Component {
-
-  onRemove = async(operationId) => {
-
-  };
-
-  onEdit = async(values) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_REST_API_LOCATION}/api/users/operations/${values.id}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json',
-        },
-        method: 'PATCH',
-        body: JSON.stringify(values)
-      });
-      if(response.status === 401) {
-        this.setState({redirect: true});
-        return;
-      }
-
-      this.loadOperations(this.state);
-    } catch(e) {
-      console.log(e);
-    }
-  };
-
   render() {
     return (
     	<Responsive>
 		    <TopHeader/>
 		    <Container className='dashboard'>
+          <StatsMonth />
 			    <Header as='h2'>Dasboard</Header>
           <div className="actions">
             <div className="buttons">
