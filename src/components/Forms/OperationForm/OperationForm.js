@@ -17,7 +17,7 @@ class OperationForm extends Component {
       Authorization: `Bearer ${this.props.token}`
     })).data
       .filter(item => item.startsWith(inputValue))
-      .map(item => ({label: item, value: item}));
+      .map(item => ({label: item, value: item, key: item}));
   };
 
   render() {

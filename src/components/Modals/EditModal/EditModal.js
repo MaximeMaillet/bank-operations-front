@@ -42,7 +42,7 @@ class EditModal extends Component {
               initialValues={{
                 ...operation,
                 date: operation.date.toDate(),
-                tags: operation.tags.map((item) => ({name: item, value: item}))
+                tags: operation.tags.map((item) => ({label: item, key: item, value: item}))
               }}
             />
           </Modal.Description>

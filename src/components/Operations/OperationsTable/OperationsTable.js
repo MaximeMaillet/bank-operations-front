@@ -7,6 +7,7 @@ import withLoading from "../../../hoc/withLoading";
 import withOperations from "../../../hoc/withOperations";
 import OperationsTableLoading from "../OperationsTableLoading/OperationsTableLoading";
 import {withRouter} from "react-router-dom";
+import get from 'lodash.get';
 
 class OperationsTable extends Component {
 
@@ -21,8 +22,9 @@ class OperationsTable extends Component {
 	};
 
 	render() {
-		const { operations, pagination: {page, lastPage} } = this.props;
+		const { operations, hasPagination, pagination} = this.props;
 		let firstDayOfMonth = moment().startOf('month');
+		let totalCredit = 0, totalDebit = 0;
 		if(operations.length > 0){
 			firstDayOfMonth = moment(operations[0].date).startOf('month');
 		}
@@ -79,20 +81,28 @@ class OperationsTable extends Component {
 
 				<Table.Footer>
 					<Table.Row>
+						<Table.HeaderCell colSpan='3' />
+						<Table.HeaderCell>{get(this.props, 'total.credit',0)}</Table.HeaderCell>
+						<Table.HeaderCell>{get(this.props, 'total.debit', 0)}</Table.HeaderCell>
+						<Table.HeaderCell />
+					</Table.Row>
+					{hasPagination &&
+					<Table.Row>
 						<Table.HeaderCell colSpan='6'>
 							<Pagination
 								floated="right"
-								defaultActivePage={page}
-								ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
-								firstItem={{ content: <Icon name='angle double left' />, icon: true }}
-								lastItem={{ content: <Icon name='angle double right' />, icon: true }}
-								prevItem={{ content: <Icon name='angle left' />, icon: true }}
-								nextItem={{ content: <Icon name='angle right' />, icon: true }}
-								totalPages={lastPage}
+								defaultActivePage={pagination.page}
+								ellipsisItem={{content: <Icon name='ellipsis horizontal'/>, icon: true}}
+								firstItem={{content: <Icon name='angle double left'/>, icon: true}}
+								lastItem={{content: <Icon name='angle double right'/>, icon: true}}
+								prevItem={{content: <Icon name='angle left'/>, icon: true}}
+								nextItem={{content: <Icon name='angle right'/>, icon: true}}
+								totalPages={pagination.lastPage}
 								onPageChange={this.onPaginationChanged}
 							/>
 						</Table.HeaderCell>
 					</Table.Row>
+					}
 				</Table.Footer>
 			</Table>
 		);

@@ -5,7 +5,7 @@ import {withRouter} from "react-router-dom";
 import OperationsTableNoResults from "../components/Operations/OperationsTableNoResults/OperationsTableNoResults";
 import {toast} from "react-semantic-toasts";
 
-export default function shouldLogged(BaseComponent) {
+export default function withOperations(BaseComponent) {
 	class OperationsComponent extends React.PureComponent {
 
 		componentDidMount() {
@@ -15,8 +15,16 @@ export default function shouldLogged(BaseComponent) {
 		}
 
 		componentWillReceiveProps(nextProps, nextContext) {
-			this.load(nextProps.location);
+			if(nextProps.from !== this.props.from) {
+				this.loadWithDate(nextProps.from.format('YYYY-MM-DD[T]HH:mm:ss'), nextProps.to.format('YYYY-MM-DD[T]HH:mm:ss'));
+			} else {
+				this.load(nextProps.location);
+			}
 		}
+
+		loadWithDate = (from, to) => {
+			this.props.loadWithDate({from, to});
+		};
 
 		load = (location) =>{
 			const searchParams = new URLSearchParams(location.search);
@@ -28,13 +36,15 @@ export default function shouldLogged(BaseComponent) {
 
 		render() {
 			if(this.props.loaded) {
-				const { operations, pagination, error } = this.props;
+				const { operations, pagination, total, error } = this.props;
 				if(!error) {
 					return <BaseComponent
 						{...this.props}
 						hasOperation={operations.length > 0}
+						hasPagination={!!pagination}
 						operations={operations}
 						pagination={pagination}
+						total={total}
 					/>;
 				} else {
 					toast({
@@ -58,10 +68,14 @@ export default function shouldLogged(BaseComponent) {
 			loaded: state.operations.loaded,
 			operations: state.operations.operations,
 			pagination: state.operations.pagination,
+			total: state.operations.total,
 			error: state.operations.error,
+			from: state.currentPeriod.from,
+			to: state.currentPeriod.to,
 		}),
 		(dispatch) => ({
-			loadOperations: (data) => dispatch(actionsOperation.load(data))
+			loadOperations: (data) => dispatch(actionsOperation.load(data)),
+			loadWithDate: (data) => dispatch(actionsOperation.loadWithDate(data))
 		})
 	)(withRouter(OperationsComponent));
 }

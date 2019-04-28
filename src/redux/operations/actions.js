@@ -44,26 +44,19 @@ const added= (data) => {
 	}
 };
 
+const reLoad = () => {
+	return {
+		type: TYPE.OPERATION_RELOAD,
+	}
+};
+
 const load = (data) => {
 	return async (dispatch) => {
 		try {
 			dispatch(startLoading());
 			const response = await api('GET', '/users/operations', data);
-
 			const {operations, pagination: {page, lastPage, pageSize: offset}} = response.data;
-
-			dispatch(operationLoaded(
-				operations.map((ope) => {
-					return {
-						...ope,
-						date: moment(ope.date),
-					}
-				}),
-				{
-					page, offset, lastPage,
-				}
-			));
-
+			dispatch(operationLoaded(operations, {page, offset, lastPage}));
 		} catch(e) {
 			dispatch(operationFailed(e.data));
 		} finally {
@@ -72,11 +65,17 @@ const load = (data) => {
 	}
 };
 
-const reLoad = () => {
-	console.log('reload');
-	console.log('what')
-	return {
-		type: TYPE.OPERATION_RELOAD,
+const loadWithDate = (data) => {
+	return async(dispatch) => {
+		try {
+			dispatch(startLoading());
+			const response = await api('GET', '/users/operations', data);
+			dispatch(operationLoaded(response.data));
+		} catch(e) {
+			dispatch(operationFailed(e.data));
+		} finally {
+			dispatch(stopLoading());
+		}
 	}
 };
 
@@ -97,6 +96,7 @@ const add = (data) => {
 export default {
 	reLoad,
 	load,
+	loadWithDate,
 	add,
 	added,
 }

@@ -25,16 +25,15 @@ const logged_out = () => {
 
 const logout = () => {
 	return async (dispatch) => {
-		console.log('coucou')
 		localStorage.removeItem('token');
 		dispatch(logged_out());
 	}
 };
 
-const login = (data) => {
+const login = (token, user) => {
 	return (dispatch) => {
-		localStorage.setItem('token', data.token);
-		dispatch(logged_in(data.user));
+		localStorage.setItem('token', token);
+		dispatch(logged_in(user));
 	};
 };
 

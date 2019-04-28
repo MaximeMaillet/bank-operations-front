@@ -13,9 +13,11 @@ const handleLoad = (input, callback) => {
 export default function(field) {
 	const {meta, input, width, load, formatChange, ...rest} = field;
 	let value = input.value;
+
 	if(!rest.isMulti) {
-		value = {label: input.value, value: input.value};
+		value = {label: input.value, value: input.value, key: input.value};
 	}
+
 	return <Form.Field width={width}>
 			<AsyncCreatableSelect
 				className='form-errors'
@@ -39,6 +41,6 @@ export default function(field) {
 				}}
 				{...rest}
 			/>
-			<div className={`form-input-errors ${!meta.valid ? 'visible':'hidden'}`} key={2}>{meta.error}</div>
+			<div className={`form-input-errors ${!meta.valid ? 'visible':'hidden'}`}>{meta.error}</div>
 		</Form.Field>;
 }

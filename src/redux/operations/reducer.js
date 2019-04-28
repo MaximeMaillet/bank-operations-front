@@ -1,10 +1,12 @@
 import {TYPE} from "./actions";
+import moment from 'moment';
 
 const initialState = {
 	isLoaded: false,
 	loaded: false,
 	operations: [],
 	pagination: {},
+	total: {credit:0, debit: 0},
 	reload: 0,
 };
 
@@ -22,11 +24,46 @@ export default function(state = initialState, actions) {
 				loading: false,
 			};
 		case TYPE.OPERATION_LOADED:
+
+			const total = {credit:0, debit: 0};
+			if(actions.operations && actions.operations.length > 0) {
+				total.debit = Math.round(
+					actions.operations
+						.map(item => !isNaN(item.debit) ? item.debit *-1: 0)
+						.reduce((acc, current) => {
+							if(!isNaN(current)) {
+								return acc + current;
+							}
+							return acc;
+						})
+					* 100
+				) / 100;
+
+				total.credit = Math.round(
+					actions.operations
+						.map(item => !isNaN(item.credit) ? item.credit : 0)
+						.reduce((acc, current) => {
+							if(!isNaN(current)) {
+								return acc + current;
+							}
+							return acc;
+						})
+					* 100
+				) / 100;
+			}
+
 			return {
 				...state,
 				loaded: true,
-				operations: actions.operations,
+				operations: actions.operations
+				.map((ope) => {
+					return {
+						...ope,
+						date: moment(ope.date),
+					}
+				}),
 				pagination: actions.pagination,
+				total,
 			};
 		case TYPE.OPERATION_FAIL:
 			return {

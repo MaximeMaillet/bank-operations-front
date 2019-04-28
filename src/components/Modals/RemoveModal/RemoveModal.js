@@ -6,6 +6,7 @@ import handleNotAuthorized from "../../../lib/handleNotAuthorized";
 import {connect} from "react-redux";
 import actions from "../../../redux/operations/actions";
 import actionsUser from "../../../redux/user/actions";
+import actionsStats from "../../../redux/statistics/actions";
 
 class RemoveModal extends Component {
   constructor(props) {
@@ -21,7 +22,8 @@ class RemoveModal extends Component {
   remove = () => {
     return api('DELETE', `/users/operations/${this.props.operation.id}`)
       .then(this.props.reloadOperations)
-      .catch((e) => e.status === 401 ? this.props.logout() : true)
+      .then(this.props.reloadStats)
+      .catch(handleNotAuthorized)
       .catch(handleApiToastMessage)
     ;
   };
@@ -50,6 +52,7 @@ export default connect(
   () => ({}),
   (dispatch) => ({
     reloadOperations: () => dispatch(actions.reLoad()),
+    reloadStats: () => dispatch(actionsStats.reload()),
     logout: () => dispatch(actionsUser.logout())
   }))
 (RemoveModal);

@@ -27,7 +27,6 @@ export default function(field) {
 			selected={input.value ? input.value : null}
 		  dateFormat={dateFormat || 'd/MM/YYYY'}
 			onChange={(value) => {
-				console.log(value);
 				return input.onChange(moment(value).utc().toDate())
 			}}
 			todayButton="Today"
