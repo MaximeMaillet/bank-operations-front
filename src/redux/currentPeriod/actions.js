@@ -1,11 +1,9 @@
 export const TYPE = {
-	CHANGE: 'currentPeriod::change'
+	CHANGE: 'currentPeriod::change',
+	CHANGE_FOR_ALL: 'currentPeriod::change_for_all',
 };
 
 const changePeriod = (from, to) => {
-	console.log('ACTIONS : CHANGE PERIOD')
-	console.log(from.toDate())
-	console.log(to.toDate())
 	return {
 		type: TYPE.CHANGE,
 		from: from,
@@ -13,6 +11,14 @@ const changePeriod = (from, to) => {
 	}
 };
 
+const changeForAll = (isForAll) => {
+	return {
+		type: TYPE.CHANGE_FOR_ALL,
+		all: isForAll,
+	}
+};
+
 export default {
 	changePeriod,
+	changeForAll,
 }

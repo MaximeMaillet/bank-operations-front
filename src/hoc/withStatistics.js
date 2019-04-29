@@ -9,14 +9,6 @@ import queryString from "query-string";
 
 export default function withStatistics(BaseComponent) {
 	class StatisticsComponent extends React.PureComponent {
-		constructor(props) {
-			super(props);
-			this.periodOptions = this.generatePeriod(
-				moment(props.user.firstOperationDate).startOf('month'),
-				moment(props.user.lastOperationDate).startOf('month')
-			);
-		}
-
 		componentWillReceiveProps(nextProps, nextContext) {
 			if(!nextProps.loading) {
 				const params = queryString.parse(nextProps.location.search);
@@ -30,6 +22,10 @@ export default function withStatistics(BaseComponent) {
 					(params.from && moment(this.props.from).diff(moment(params.from)) !== 0 )||
 					(params.to && moment(this.props.from).diff(moment(params.from)) !== 0)
 				) {
+					this.props.loadStatistics(params);
+				}
+
+				if(this.props.all !== nextProps.all) {
 					this.props.loadStatistics(params);
 				}
 
@@ -55,22 +51,6 @@ export default function withStatistics(BaseComponent) {
 			}
 		}
 
-		generatePeriod = (from, to) => {
-			const period = [];
-			let currentDate = moment(to), nbMonth = 0;
-			while(currentDate >= from) {
-				nbMonth++;
-				period.push({
-					key: nbMonth,
-					value: currentDate.startOf('month').startOf('day').format('YYYY-MM-DD[T]HH:mm:ss'),
-					text: currentDate.startOf('month').startOf('day').format('MMMM YYYY'),
-				});
-				currentDate.subtract(1, 'months');
-			}
-
-			return period;
-		};
-
 		render() {
 			if(this.props.loading || !this.props.loaded) {
 				return <StatsMonthLoading />;
@@ -80,7 +60,6 @@ export default function withStatistics(BaseComponent) {
 			return <BaseComponent
 				{...this.props}
 				from={from}
-				period={this.periodOptions}
 				credit={credit}
 				debit={debit}
 				total={total}
@@ -93,6 +72,7 @@ export default function withStatistics(BaseComponent) {
 			user: state.user.user,
 			from: state.currentPeriod.from,
 			to: state.currentPeriod.to,
+			all: state.currentPeriod.all,
 			loading: state.statistics.loading,
 			loaded: state.statistics.loaded,
 			credit: state.statistics.credit,

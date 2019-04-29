@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Label, Step, Dropdown, Placeholder} from "semantic-ui-react";
+import {Step, Dropdown, Placeholder} from "semantic-ui-react";
 
 import './stats-month.scss'
 
@@ -8,7 +8,6 @@ export default class StatsMonthLoading extends Component {
 		return (
 			<div className="stats-month">
 				<div className="titles">
-					<Label color="blue" ribbon />
 					<div className="controls">
 						<Dropdown
 							text='Date'

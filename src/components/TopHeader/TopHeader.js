@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Button, Menu, Segment } from 'semantic-ui-react'
+import { Container, Menu, Segment } from 'semantic-ui-react'
 import {connect} from "react-redux";
 
 class TopHeader extends Component {
