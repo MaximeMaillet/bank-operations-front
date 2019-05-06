@@ -2,9 +2,10 @@ import moment from 'moment';
 import {TYPE} from "./actions";
 
 const initialState = {
-	from: moment().startOf('month'),
-	to: moment().add(1, 'months').startOf('month'),
-	all: false,
+	from: null, //moment().startOf('month'),
+	to: null, //moment().add(1, 'months').startOf('month'),
+	all: 0,
+	period: 0,
 };
 
 export default (state = initialState, actions) => {
@@ -14,10 +15,15 @@ export default (state = initialState, actions) => {
 				...state,
 				from: actions.from,
 				to: actions.to,
+				period: state.period+1,
+				all: actions.all,
 			};
 		case TYPE.CHANGE_FOR_ALL:
 			return {
 				...state,
+				from: actions.from,
+				to: actions.to,
+				period: state.period+1,
 				all: actions.all,
 			};
 		default:

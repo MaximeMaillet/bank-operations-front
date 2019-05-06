@@ -5,8 +5,6 @@ import {withRouter} from "react-router-dom";
 import OperationsTableNoResults from "../components/Operations/OperationsTableNoResults/OperationsTableNoResults";
 import {toast} from "react-semantic-toasts";
 import queryString from "query-string";
-import actionsCurrentPeriod from "../redux/currentPeriod/actions";
-import moment from 'moment';
 import OperationsTableLoading from "../components/Operations/OperationsTableLoading/OperationsTableLoading";
 
 export default function withOperations(BaseComponent) {
@@ -20,11 +18,7 @@ export default function withOperations(BaseComponent) {
 
 		componentWillReceiveProps(nextProps, nextContext) {
 			if(!nextProps.loading){
-				if(!nextProps.loaded) {
-					this.load(nextProps.location);
-				}
-
-				if(nextProps.location.search !== this.props.location.search) {
+				if(this.props.period !== nextProps.period) {
 					this.load(nextProps.location);
 				}
 			}
@@ -33,12 +27,6 @@ export default function withOperations(BaseComponent) {
 		load = (location) => {
 			const params = queryString.parse(location.search);
 			this.props.loadOperations(params);
-			if(
-				(params.from && this.props.from.diff(moment(params.from)) !== 0) ||
-				(params.to && this.props.to.diff(moment(params.to)) !== 0)
-			) {
-				this.props.changePeriod(moment(params.from), moment(params.to));
-			}
 		};
 
 		render() {
@@ -84,10 +72,10 @@ export default function withOperations(BaseComponent) {
 			error: state.operations.error,
 			from: state.currentPeriod.from,
 			to: state.currentPeriod.to,
+			period: state.currentPeriod.period,
 		}),
 		(dispatch) => ({
 			loadOperations: (data) => dispatch(actionsOperation.load(data)),
-			changePeriod: (from, to) => dispatch(actionsCurrentPeriod.changePeriod(from, to)),
 		})
 	)(withRouter(OperationsComponent));
 }

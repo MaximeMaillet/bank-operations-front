@@ -16,13 +16,11 @@ export default class ModalComponent extends Component {
 		this.handlers = {
 			onEnter: (event) => {
 				this.onEnter();
-				console.log(this.props.component)
 			}
 		}
 	}
 
 	handleClose = () => {
-		console.log('handle close')
 		this.setState({ isOpen: false });
 	};
 

@@ -4,47 +4,40 @@ import {withRouter} from "react-router-dom";
 import moment from 'moment';
 import queryString from "query-string";
 import actionsPeriod from "../redux/currentPeriod/actions";
+import clone from 'lodash.clone'
 
 export default function withPeriod(BaseComponent) {
 	class PeriodComponent extends React.PureComponent {
 		constructor(props) {
 			super(props);
-			const params = queryString.parse(props.location.search);
-			props.changeForAll(!!params.all);
-			this.period = this.generatePeriod(
+			[this.periodFrom, this.periodTo] = this.generatePeriod(
 				moment(props.user.firstOperationDate).startOf('month'),
 				moment(props.user.lastOperationDate).startOf('month')
 			);
 		}
 
-		componentWillReceiveProps(nextProps, nextContext) {
-			const params = queryString.parse(nextProps.location.search);
-			if(params.all !== this.props.all) {
-				this.props.changeForAll(!!params.all);
+		changePeriod = (from, to) => {
+			if(!to) {
+				to = moment(from).add(1, 'months');
 			}
-		}
-
-		changePeriod = (e, {value}) => {
 			const {pathname, search} = this.props.location;
 			const params = queryString.parse(search);
-			params.from = moment(value).format('YYYY-MM-DD[T]HH:mm:ss');
-			params.to = moment(value).add(1, 'months').startOf('month').format('YYYY-MM-DD[T]HH:mm:ss');
+			params.from = moment(from).startOf('month').format('YYYY-MM-DD[T]HH:mm:ss');
+			params.to = moment(to).startOf('month').format('YYYY-MM-DD[T]HH:mm:ss');
 			this.props.history.push({
 				pathname,
 				search: queryString.stringify(params)
 			})
 		};
 
-		handleAllButton = () => {
+		handleAllTime = () => {
 			const {pathname, search} = this.props.location;
 			const params = queryString.parse(search);
 			if(!this.props.all) {
 				delete params.from;
 				delete params.to;
-				params.all = true;
+				params.all = 1;
 			} else {
-				params.from = moment(this.props.user.firstOperationDate).startOf('month').format('YYYY-MM-DD[T]HH:mm:ss');
-				params.to = moment(this.props.user.lastOperationDate).add(1, 'months').startOf('month').format('YYYY-MM-DD[T]HH:mm:ss');
 				delete params.all;
 			}
 
@@ -56,7 +49,7 @@ export default function withPeriod(BaseComponent) {
 
 		generatePeriod = (from, to) => {
 			const period = [];
-			let currentDate = moment(to), nbMonth = 0;
+			let currentDate = moment(to).add(1, 'months'), nbMonth = 0;
 			while(currentDate >= from) {
 				nbMonth++;
 				period.push({
@@ -67,18 +60,23 @@ export default function withPeriod(BaseComponent) {
 				currentDate.subtract(1, 'months');
 			}
 
-			return period;
+			const arrayFrom = clone(period);
+			const arrayTo = clone(period);
+			arrayFrom.splice(0,1);
+			return [arrayFrom, arrayTo];
 		};
 
 		render() {
-			const {from, all} = this.props;
+			const {from, to, all, ...rest} = this.props;
 			return <BaseComponent
-				{...this.props}
+				{...rest}
 				from={from}
+				to={to}
 				all={all}
-				period={this.period}
+				periodFrom={this.periodFrom}
+				periodTo={this.periodTo}
 				changePeriod={this.changePeriod}
-				handleAllButton={this.handleAllButton}
+				handleAllTime={this.handleAllTime}
 			/>;
 		}
 	}
@@ -91,7 +89,8 @@ export default function withPeriod(BaseComponent) {
 			all: state.currentPeriod.all,
 		}),
 		(dispatch) => ({
-			changeForAll: (data) => dispatch(actionsPeriod.changeForAll(data)),
+			changeForAll: () => dispatch(actionsPeriod.changeForAll()),
+			changePeriod: (from, to) => dispatch(actionsPeriod.changePeriod(from, to)),
 		})
 	)(withRouter(PeriodComponent));
 }

@@ -18,7 +18,6 @@ export default (BaseComponent) => {
 
 			this.handlers = {
 				onKeyEnter: () => {
-					console.log('enter')
 					if(this.child) {
 						this.child.onKeyEnter();
 					}

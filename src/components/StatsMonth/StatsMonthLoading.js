@@ -1,55 +1,35 @@
 import React, {Component} from 'react';
-import {Step, Dropdown, Placeholder} from "semantic-ui-react";
-
-import './stats-month.scss'
+import {Step, Placeholder} from "semantic-ui-react";
 
 export default class StatsMonthLoading extends Component {
 	render() {
 		return (
-			<div className="stats-month">
-				<div className="titles">
-					<div className="controls">
-						<Dropdown
-							text='Date'
-							icon='filter'
-							floating
-							labeled
-							button
-							className='icon'
-							color='teal'
-							options={[]}
-							placeholder='Select date'
-							selection
-						/>
-					</div>
-				</div>
-				<Step.Group widths={3}>
-					<Step>
-						<Placeholder style={{width: '100px'}}>
-							<Placeholder.Header image>
-								<Placeholder.Line />
-								<Placeholder.Line />
-							</Placeholder.Header>
-						</Placeholder>
-					</Step>
-					<Step>
-						<Placeholder style={{width: '100px'}}>
-							<Placeholder.Header image>
-								<Placeholder.Line />
-								<Placeholder.Line />
-							</Placeholder.Header>
-						</Placeholder>
-					</Step>
-					<Step>
-						<Placeholder style={{width: '100px'}}>
-							<Placeholder.Header image>
-								<Placeholder.Line />
-								<Placeholder.Line />
-							</Placeholder.Header>
-						</Placeholder>
-					</Step>
-				</Step.Group>
-			</div>
+			<Step.Group widths={3}>
+				<Step>
+					<Placeholder style={{width: '100px'}}>
+						<Placeholder.Header image>
+							<Placeholder.Line />
+							<Placeholder.Line />
+						</Placeholder.Header>
+					</Placeholder>
+				</Step>
+				<Step>
+					<Placeholder style={{width: '100px'}}>
+						<Placeholder.Header image>
+							<Placeholder.Line />
+							<Placeholder.Line />
+						</Placeholder.Header>
+					</Placeholder>
+				</Step>
+				<Step>
+					<Placeholder style={{width: '100px'}}>
+						<Placeholder.Header image>
+							<Placeholder.Line />
+							<Placeholder.Line />
+						</Placeholder.Header>
+					</Placeholder>
+				</Step>
+			</Step.Group>
 		);
 	}
 }

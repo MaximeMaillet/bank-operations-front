@@ -7,6 +7,7 @@ import OperationsTable from "../../../components/Operations/OperationsTable/Oper
 
 import './dashboard.scss';
 import StatsMonth from "../../../components/StatsMonth/StatsMonth";
+import FilterPeriod from "../../../components/FilterPeriod/FilterPeriod";
 
 class Dashboard extends Component {
   render() {
@@ -14,6 +15,7 @@ class Dashboard extends Component {
     	<Responsive>
 		    <TopHeader/>
 		    <Container className='dashboard'>
+			    <FilterPeriod />
           <StatsMonth />
 			    <Header as='h2'>Dasboard</Header>
           <div className="actions">

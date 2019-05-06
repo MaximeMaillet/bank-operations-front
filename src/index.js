@@ -6,6 +6,9 @@ import {Provider} from "react-redux";
 import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
 import reducers from './redux/reducers';
 import thunkMiddleware from 'redux-thunk';
+import {SemanticToastContainer} from "react-semantic-toasts";
+import {Router} from "react-router-dom";
+import history from './routes/history';
 
 let store = createStore(
 	combineReducers({
@@ -19,7 +22,10 @@ let store = createStore(
 
 ReactDOM.render((
 	<Provider store={store} >
-    <App />
+		<Router history={history}>
+			<App />
+			<SemanticToastContainer position="top-right" />
+		</Router>
 	</Provider>
 ), document.getElementById('root'));
 

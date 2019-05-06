@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import actionsStats from '../redux/statistics/actions';
 import {withRouter} from "react-router-dom";
 import {toast} from "react-semantic-toasts";
-import moment from 'moment';
 import StatsMonthLoading from "../components/StatsMonth/StatsMonthLoading";
 import queryString from "query-string";
 
@@ -12,20 +11,7 @@ export default function withStatistics(BaseComponent) {
 		componentWillReceiveProps(nextProps, nextContext) {
 			if(!nextProps.loading) {
 				const params = queryString.parse(nextProps.location.search);
-				delete params.page;
-				delete params.offset;
-				if(!nextProps.loaded) {
-					this.props.loadStatistics(params);
-				}
-
-				if(
-					(params.from && moment(this.props.from).diff(moment(params.from)) !== 0 )||
-					(params.to && moment(this.props.from).diff(moment(params.from)) !== 0)
-				) {
-					this.props.loadStatistics(params);
-				}
-
-				if(this.props.all !== nextProps.all) {
+				if(this.props.period !== nextProps.period) {
 					this.props.loadStatistics(params);
 				}
 
@@ -58,7 +44,6 @@ export default function withStatistics(BaseComponent) {
 
 			const {credit, debit, total, from} = this.props;
 			return <BaseComponent
-				{...this.props}
 				from={from}
 				credit={credit}
 				debit={debit}
@@ -73,6 +58,7 @@ export default function withStatistics(BaseComponent) {
 			from: state.currentPeriod.from,
 			to: state.currentPeriod.to,
 			all: state.currentPeriod.all,
+			period: state.currentPeriod.period,
 			loading: state.statistics.loading,
 			loaded: state.statistics.loaded,
 			credit: state.statistics.credit,

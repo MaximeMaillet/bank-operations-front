@@ -25,7 +25,7 @@ export default function shouldLogged(BaseComponent) {
 
 		render() {
 			if(this.props.isLogged) {
-				return <BaseComponent {...this.props} />;
+				return <BaseComponent {...this.props} conard='con' />;
 			}
 
 			return <UnauthorizedComponent />;
