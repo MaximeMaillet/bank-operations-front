@@ -11,7 +11,7 @@ export default function withStatistics(BaseComponent) {
 		componentWillReceiveProps(nextProps, nextContext) {
 			if(!nextProps.loading) {
 				const params = queryString.parse(nextProps.location.search);
-				if(this.props.period !== nextProps.period) {
+				if(this.props.period !== nextProps.period || nextProps.reloaded) {
 					this.props.loadStatistics(params);
 				}
 
@@ -54,13 +54,12 @@ export default function withStatistics(BaseComponent) {
 
 	return connect(
 		(state) => ({
-			user: state.user.user,
 			from: state.currentPeriod.from,
 			to: state.currentPeriod.to,
-			all: state.currentPeriod.all,
 			period: state.currentPeriod.period,
 			loading: state.statistics.loading,
 			loaded: state.statistics.loaded,
+			reloaded: state.statistics.reloaded,
 			credit: state.statistics.credit,
 			debit: state.statistics.debit,
 			total: state.statistics.total,

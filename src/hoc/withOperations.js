@@ -18,7 +18,7 @@ export default function withOperations(BaseComponent) {
 
 		componentWillReceiveProps(nextProps, nextContext) {
 			if(!nextProps.loading){
-				if(this.props.period !== nextProps.period) {
+				if(this.props.period !== nextProps.period || nextProps.reloaded) {
 					this.load(nextProps.location);
 				}
 			}
@@ -63,7 +63,7 @@ export default function withOperations(BaseComponent) {
 
 	return connect(
 		(state) => ({
-			reload: state.operations.reload,
+			reloaded: state.operations.reloaded,
 			loaded: state.operations.loaded,
 			loading: state.operations.loading,
 			operations: state.operations.operations,

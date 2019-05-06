@@ -6,6 +6,7 @@ const initialState = {
 	total:0,
 	loading: false,
 	loaded: false,
+	reloaded: false,
 };
 
 export default (state = initialState, actions) => {
@@ -14,6 +15,7 @@ export default (state = initialState, actions) => {
 			return {
 				...state,
 				loading: actions.loading,
+				reloaded: actions.reloaded,
 			};
 		case TYPE.STOP_LOADING:
 			return {
@@ -40,8 +42,8 @@ export default (state = initialState, actions) => {
 		case TYPE.RELOAD:
 			return {
 				...state,
-				loaded: false,
-			}
+				reloaded: actions.reloaded,
+			};
 		default:
 				return state;
 	}

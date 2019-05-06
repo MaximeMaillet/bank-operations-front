@@ -12,6 +12,7 @@ const startLoading = () => {
 	return {
 		type: TYPE.START_LOADING,
 		loading: true,
+		reloaded: false,
 	}
 };
 
@@ -36,9 +37,10 @@ const failed = (error) => {
 	}
 };
 
-const reload= () => {
+const reloaded = () => {
 	return {
 		type: TYPE.RELOAD,
+		reloaded: true,
 	}
 };
 
@@ -53,6 +55,12 @@ const loadStatistics = (data) => {
 		} finally {
 			dispatch(stopLoading())
 		}
+	}
+};
+
+const reload = () => {
+	return async (dispatch) => {
+		dispatch(reloaded());
 	}
 };
 

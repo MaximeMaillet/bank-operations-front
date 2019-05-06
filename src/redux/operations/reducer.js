@@ -6,7 +6,7 @@ const initialState = {
 	operations: [],
 	pagination: {},
 	total: {credit:0, debit: 0},
-	reload: 0,
+	reloaded: false,
 };
 
 export default function(state = initialState, actions) {
@@ -15,6 +15,7 @@ export default function(state = initialState, actions) {
 			return {
 				...state,
 				loading: actions.loading,
+				reloaded: actions.reloaded,
 			};
 		case TYPE.STOP_LOADING:
 			return {
@@ -38,7 +39,7 @@ export default function(state = initialState, actions) {
 		case TYPE.RELOAD:
 			return {
 				...state,
-				loaded: actions.loaded,
+				reloaded: actions.reloaded,
 			};
 		default:
 			return state;
