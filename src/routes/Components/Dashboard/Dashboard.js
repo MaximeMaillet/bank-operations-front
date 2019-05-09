@@ -21,7 +21,7 @@ class Dashboard extends Component {
           <div className="actions">
             <div className="buttons">
               <AddOperationModal />
-              <Button circular icon color="blue" labelPosition='right'><Icon name="upload" />Import</Button>
+              {/*<Button circular icon color="blue" labelPosition='right'><Icon name="upload" />Import</Button>*/}
             </div>
           </div>
 			    <OperationsTable />

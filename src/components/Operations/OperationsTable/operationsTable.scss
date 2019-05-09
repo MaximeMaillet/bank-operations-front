@@ -1,0 +1,13 @@
+.nowrap {
+  white-space: nowrap !important;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.cut-too-long {
+  display: block;
+  width: 30rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

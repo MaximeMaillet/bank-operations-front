@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Route, Switch, withRouter} from "react-router-dom";
 
 import './main.scss'
-import Home from './containers/Home/Home.js';
+import Home from './routes/Components/Home/Home.js';
 import Dashboard from "./routes/Components/Dashboard/Dashboard";
 import NotFound from "./components/Errors/NotFound";
 import {connect} from "react-redux";

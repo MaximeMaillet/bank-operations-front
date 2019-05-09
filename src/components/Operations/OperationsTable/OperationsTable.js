@@ -1,18 +1,16 @@
 import React, {Component} from 'react';
-import {Label, Table, Pagination, Icon} from "semantic-ui-react";
+import {Table, Pagination, Icon} from "semantic-ui-react";
 import moment from 'moment';
-import EditOperationModal from "../../Modals/EditOperationModal/EditOperationModal";
-import RemoveModal from "../../Modals/RemoveOperationModal/RemoveOperationModal";
 import withOperations from "../../../hoc/withOperations";
 import {withRouter} from "react-router-dom";
 import get from 'lodash.get';
 import queryString from "query-string";
-import SplitOperationModal from "../../Modals/SplitOperaationModal/SplitOperationModal";
 import OperationTableRowSub from "./OperationTableRowSub";
 import OperationTableRow from "./OperationTableRow";
 
-class OperationsTable extends Component {
+import './operationsTable.scss'
 
+class OperationsTable extends Component {
 	onPaginationChanged = (e, {activePage}) => {
 		const {pathname, search} = this.props.location;
 		const params = queryString.parse(search);

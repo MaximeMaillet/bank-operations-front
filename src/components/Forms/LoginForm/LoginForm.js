@@ -9,43 +9,32 @@ import FormComponent from '../../FormComponents/form'
 class LoginForm extends Component {
 	render() {
 		return (
-			<Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
-				<Grid.Column style={{ maxWidth: 450 }}>
-					<Header as='h2' color='teal' textAlign='center'>
-						<Image src='/logo.png' /> Log-in to your account
-					</Header>
-					<Message
-						error
-						hidden={!this.props.error}
-						header={this.props.error}
+			<Form error={!!this.props.error} size='large' onSubmit={this.props.handleSubmit}>
+				<FormComponent.MainErrors {...this.props} />
+				<Segment>
+					<Field
+						name="username"
+						component={FormComponent.Input}
+						type="text"
+						fluid
+						icon='user'
+						iconPosition='left'
+						placeHolder='Username'
 					/>
-					<Form error={!!this.props.error} size='large' onSubmit={this.props.handleSubmit}>
-						<Segment stacked>
-							<Field
-								name="username"
-								component={FormComponent.Input}
-								type="text"
-								fluid
-								icon='user'
-								iconPosition='left'
-								placeHolder='Username'
-							/>
-							<Field
-								name="password"
-								component={FormComponent.Input}
-								type="password"
-								fluid
-								icon='lock'
-								iconPosition='left'
-								placeholder='Password'
-							/>
-							<Button color='teal' fluid size='large' type="submit">
-								Login
-							</Button>
-						</Segment>
-					</Form>
-				</Grid.Column>
-			</Grid>
+					<Field
+						name="password"
+						component={FormComponent.Input}
+						type="password"
+						fluid
+						icon='lock'
+						iconPosition='left'
+						placeholder='Password'
+					/>
+					<Button color='teal' fluid size='large' type="submit">
+						Login
+					</Button>
+				</Segment>
+			</Form>
 		);
 	}
 }
