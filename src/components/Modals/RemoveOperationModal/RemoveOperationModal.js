@@ -51,7 +51,7 @@ class RemoveOperationModal extends Component {
 export default connect(
   () => ({}),
   (dispatch) => ({
-    reloadOperations: () => dispatch(actions.reLoad()),
+    reloadOperations: () => dispatch(actions.reload()),
     reloadStats: () => dispatch(actionsStats.reload()),
   })
 )(withModal(RemoveOperationModal));

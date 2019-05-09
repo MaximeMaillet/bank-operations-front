@@ -8,6 +8,8 @@ import {withRouter} from "react-router-dom";
 import get from 'lodash.get';
 import queryString from "query-string";
 import SplitOperationModal from "../../Modals/SplitOperaationModal/SplitOperationModal";
+import OperationTableRowSub from "./OperationTableRowSub";
+import OperationTableRow from "./OperationTableRow";
 
 class OperationsTable extends Component {
 
@@ -40,45 +42,15 @@ class OperationsTable extends Component {
 						<Table.HeaderCell>Action</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
-
 				<Table.Body>
 					{operations.map((operation, index) => {
-						let isLabel = false;
-						if(moment(operation.date).startOf('month') < firstDayOfMonth) {
-							firstDayOfMonth = operation.date.startOf('month');
-							isLabel = true;
+						if(operation.subs.length > 0) {
+							return <OperationTableRowSub key={index} operation={operation} firstDayOfMonth={firstDayOfMonth} />
+						} else {
+							return <OperationTableRow key={index} operation={operation} firstDayOfMonth={firstDayOfMonth} />
 						}
-
-						const label = <Label color="blue" ribbon>{firstDayOfMonth.format('MMMM YYYY')}</Label>;
-						return (
-							<Table.Row key={index}>
-								<Table.Cell>
-									{isLabel ? label : null}
-									{operation.date.format('DD/MM/YYYY')}
-								</Table.Cell>
-								<Table.Cell>
-									{operation.category}
-								</Table.Cell>
-								<Table.Cell>
-									<div className="cut-too-long">{operation.label}</div>
-									{operation.tags.map((tag, index) => {
-										return (
-											<Label key={index} as='span' color="teal">{tag}</Label>
-										);
-									})}
-								</Table.Cell>
-								<Table.Cell>{operation.credit}</Table.Cell>
-								<Table.Cell>{operation.debit}</Table.Cell>
-								<Table.Cell className="nowrap">
-									<SplitOperationModal operation={operation} />
-									<EditOperationModal operation={operation} />
-									<RemoveModal operation={operation} />
-								</Table.Cell>
-							</Table.Row>
-						);
 					})}
 				</Table.Body>
-
 				<Table.Footer>
 					<Table.Row>
 						<Table.HeaderCell colSpan='3' />
