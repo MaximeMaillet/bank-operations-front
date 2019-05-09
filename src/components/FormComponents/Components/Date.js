@@ -3,6 +3,8 @@ import { Form, } from 'semantic-ui-react'
 import DatePicker from "react-datepicker";
 import moment from "moment";
 
+import '../form.scss'
+
 class CustomInput extends React.Component {
 	render() {
 		const {value, meta, placeHolder, icon, iconPosition, onClick} = this.props;

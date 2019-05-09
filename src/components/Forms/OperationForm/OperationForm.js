@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Segment} from "semantic-ui-react";
 import {connect} from "react-redux";
-
-import './operation-form.scss';
 import submit from "../OperationForm/submit";
 import {Field, reduxForm} from "redux-form";
 import FormComponent from "../../FormComponents/form";
@@ -25,7 +23,6 @@ class OperationForm extends Component {
       <Form onSubmit={this.props.handleSubmit} className="custom-form">
         <FormComponent.MainErrors {...this.props} />
         <Segment>
-
           <Form.Group unstackable>
             <Field
               name="date"

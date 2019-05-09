@@ -7,6 +7,7 @@ import withOperations from "../../../hoc/withOperations";
 import {withRouter} from "react-router-dom";
 import get from 'lodash.get';
 import queryString from "query-string";
+import SplitOperationModal from "../../Modals/SplitOperaationModal/SplitOperationModal";
 
 class OperationsTable extends Component {
 
@@ -69,6 +70,7 @@ class OperationsTable extends Component {
 								<Table.Cell>{operation.credit}</Table.Cell>
 								<Table.Cell>{operation.debit}</Table.Cell>
 								<Table.Cell className="nowrap">
+									<SplitOperationModal operation={operation} />
 									<EditOperationModal operation={operation} />
 									<RemoveModal operation={operation} />
 								</Table.Cell>

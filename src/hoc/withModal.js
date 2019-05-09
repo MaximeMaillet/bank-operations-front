@@ -41,7 +41,7 @@ export default (BaseComponent) => {
 		};
 
 		lockClose = () => {
-			this.setState({ closeEnable: false });
+			// this.setState({ closeEnable: false });
 		};
 
 		render() {

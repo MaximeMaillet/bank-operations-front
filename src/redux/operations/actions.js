@@ -54,7 +54,7 @@ const load = (data) => {
 		try {
 			dispatch(startLoading());
 			const response = await api('GET', '/users/operations', data);
-			const {operations, pagination: {page, lastPage, pageSize: offset}} = response.data;
+			let {operations, pagination: {page, lastPage, pageSize: offset}} = response.data;
 
 			const total = {credit:0, debit: 0};
 			if(operations && operations.length > 0) {
@@ -83,13 +83,20 @@ const load = (data) => {
 				) / 100;
 			}
 
+			operations = operations.map((ope) => {
+				ope.subs = ope.subs.map(sub => {
+					sub.date = moment(sub.date).toDate();
+					sub.tags = sub.tags.map((item) => ({label: item, key: item, value: item}));
+					return sub;
+				});
+				return {
+					...ope,
+					date: moment(ope.date),
+				}
+			})
+
 			dispatch(loaded(
-				operations.map((ope) => {
-					return {
-						...ope,
-						date: moment(ope.date),
-					}
-				}), total, {page, offset, lastPage}));
+				operations, total, {page, offset, lastPage}));
 		} catch(e) {
 			dispatch(failed(e));
 		} finally {
