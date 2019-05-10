@@ -9,6 +9,6 @@ export default (e) => {
 
 	throw new SubmissionError({
 		_error: mainMessage,
-		...error,
+		...error.errors,
 	});
 }
