@@ -21,6 +21,10 @@ export default function withOperations(BaseComponent) {
 				if(this.props.period !== nextProps.period || nextProps.reloaded) {
 					this.load(nextProps.location);
 				}
+
+				if(JSON.stringify(this.props.location) !== JSON.stringify(nextProps.location)) {
+					this.load(nextProps.location);
+				}
 			}
 		}
 
