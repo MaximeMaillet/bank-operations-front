@@ -22,7 +22,15 @@ export default async(method, endpoint, parameters, headers) => {
 	}
 
 	if(method !== 'GET') {
-		config['body'] = JSON.stringify(parameters);
+		if(config.headers['Content-Type'] === 'application/json') {
+			config['body'] = JSON.stringify(parameters);
+		} else {
+			config['body'] = parameters;
+		}
+	}
+
+	if(config.headers['Content-Type'] === '') {
+		delete config.headers['Content-Type'];
 	}
 
 	const result = await fetch(`${process.env.REACT_APP_REST_API_LOCATION}/api${endpoint}${params.toString() ? '?'+params.toString() : ''}`, config);

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Label, Table} from "semantic-ui-react";
 import EditOperationModal from "../../Modals/EditOperationModal/EditOperationModal";
 import RemoveModal from "../../Modals/RemoveOperationModal/RemoveOperationModal";
-import SplitOperationModal from "../../Modals/SplitOperaationModal/SplitOperationModal";
+import SplitOperationModal from "../../Modals/SplitOperationModal/SplitOperationModal";
 import moment from "moment";
 import clone from 'lodash.clone'
 

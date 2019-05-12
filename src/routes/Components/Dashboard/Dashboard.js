@@ -8,6 +8,7 @@ import OperationsTable from "../../../components/Operations/OperationsTable/Oper
 import './dashboard.scss';
 import StatsMonth from "../../../components/StatsMonth/StatsMonth";
 import FilterPeriod from "../../../components/FilterPeriod/FilterPeriod";
+import ImportOperationModal from "../../../components/Modals/ImportOperationsModal/ImportOperationModal";
 
 class Dashboard extends Component {
   render() {
@@ -21,7 +22,7 @@ class Dashboard extends Component {
           <div className="actions">
             <div className="buttons">
               <AddOperationModal />
-              {/*<Button circular icon color="blue" labelPosition='right'><Icon name="upload" />Import</Button>*/}
+              <ImportOperationModal />
             </div>
           </div>
 			    <OperationsTable />
