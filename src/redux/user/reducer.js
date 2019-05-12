@@ -3,6 +3,7 @@ import {TYPE} from './actions';
 const initialState = {
 	isLogged: false,
 	user: null,
+	redirectHome: false,
 };
 
 export default function(state = initialState, actions) {
@@ -17,6 +18,7 @@ export default function(state = initialState, actions) {
 			return {
 				...state,
 				isLogged: actions.isLogged,
+				redirectHome: actions.redirectHome,
 			};
 		default:
 			return state;

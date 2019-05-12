@@ -23,9 +23,15 @@ export default function shouldLogged(BaseComponent) {
 			}
 		}
 
+		componentWillReceiveProps(nextProps, nextContext) {
+			if(nextProps.redirectHome) {
+				this.props.history.push('/');
+			}
+		}
+
 		render() {
 			if(this.props.isLogged) {
-				return <BaseComponent {...this.props} conard='con' />;
+				return <BaseComponent {...this.props} />;
 			}
 
 			return <UnauthorizedComponent />;
@@ -35,6 +41,7 @@ export default function shouldLogged(BaseComponent) {
 	return connect(
 		(state) => ({
 			isLogged: state.user.isLogged,
+			redirectHome: state.user.redirectHome,
 		}),
 		(dispatch) => ({
 			login: (token, user) => dispatch(actionsUser.login(token, user)),

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Container, Menu, Segment } from 'semantic-ui-react'
+import {Button, Container, Menu, Segment} from 'semantic-ui-react'
 import {connect} from "react-redux";
+import actionsUser from "../../redux/user/actions";
 
 class TopHeader extends Component {
-
 	render() {
-		let fixed = false;
-
 		return (
 			<Segment
 				inverted
@@ -14,16 +12,11 @@ class TopHeader extends Component {
 				className="top-header"
 				vertical
 				color="teal"
-				style={{
-					minHeight: 70,
-					padding: '1em 0',
-				}}
 			>
 				<Menu
-					fixed={fixed ? 'top' : null}
-					inverted={!fixed}
-					pointing={!fixed}
-					secondary={!fixed}
+					inverted
+					pointing
+					secondary
 					size='large'
 					style={{
 						borderWidth: 0
@@ -33,6 +26,11 @@ class TopHeader extends Component {
 						<Menu.Item active as='a' to="/dashboard">
 							Dashboard
 						</Menu.Item>
+						<Menu.Menu position='right'>
+							<Menu.Item>
+								<Button primary onClick={() => this.props.logout(true)}>Log Out</Button>
+							</Menu.Item>
+						</Menu.Menu>
 					</Container>
 				</Menu>
 			</Segment>
@@ -40,4 +38,12 @@ class TopHeader extends Component {
 	}
 }
 
-export default connect((state) => ({user: state.user.user}))(TopHeader);
+export default connect(
+	(state) => ({
+		user: state.user.user
+	}),
+	(dispatch) => ({
+		logout: (redirectHome) => dispatch(actionsUser.logout(redirectHome))
+	})
+)
+(TopHeader);

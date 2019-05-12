@@ -14,17 +14,18 @@ const logged_in = (user) => {
 	}
 };
 
-const logged_out = () => {
+const logged_out = (redirectHome) => {
 	return {
 		type: TYPE.LOG_OUT,
 		isLogged: false,
+		redirectHome: redirectHome || false,
 	}
 };
 
-const logout = () => {
+const logout = (redirectHome) => {
 	return async (dispatch) => {
 		localStorage.removeItem('token');
-		dispatch(logged_out());
+		dispatch(logged_out(redirectHome));
 	}
 };
 
