@@ -4,6 +4,8 @@ import Date from './Components/Date';
 import SelectCreatable from './Components/SelectCreatable';
 import MainErrors from './Components/MainErrors';
 
+import './form.scss'
+
 export default {
 	Input,
 	Import,
