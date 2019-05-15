@@ -1,7 +1,8 @@
 .nowrap {
   white-space: nowrap !important;
-  display: flex;
-  flex-wrap: nowrap;
+  & > div {
+    display: inline;
+  }
 }
 
 .cut-too-long {

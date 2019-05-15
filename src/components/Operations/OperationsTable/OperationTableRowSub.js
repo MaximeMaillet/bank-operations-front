@@ -52,7 +52,6 @@ export default class OperationTableRowSub extends Component {
 				<Table.Cell>{operation.debit}</Table.Cell>
 				<Table.Cell className="nowrap">
 					<SplitOperationModal operation={operation} />
-					<EditOperationModal operation={operation} />
 					<RemoveModal operation={operation} />
 				</Table.Cell>
 			</Table.Row>

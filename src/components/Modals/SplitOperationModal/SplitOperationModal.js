@@ -31,7 +31,12 @@ class SplitOperationModal extends Component {
 		const SubmitButton = createSubmit(formName, <Button color='green'><Icon name='checkmark' /> Split</Button>);
 		return (
 			<Modal
-				trigger={<Button circular color="green" inverted icon='cut' onClick={this.props.open} />}
+				trigger={
+					operation.subs && operation.subs.length > 0 ?
+						<Button circular color="green" inverted icon='edit' onClick={this.props.open} />
+						:
+						<Button circular color="green" inverted icon='cut' onClick={this.props.open} />
+				}
 				open={this.props.isOpen}
 				onClose={this.props.close}
 				closeOnEscape={this.props.closeable}
