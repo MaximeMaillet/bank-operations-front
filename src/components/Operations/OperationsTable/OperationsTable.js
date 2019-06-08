@@ -24,9 +24,6 @@ class OperationsTable extends Component {
 	render() {
 		const { operations, hasPagination, pagination} = this.props;
 		let firstDayOfMonth = moment().startOf('month');
-		if(operations.length > 0){
-			firstDayOfMonth = moment(operations[0].date).startOf('month');
-		}
 
 		return (
 			<Table celled stackable>
@@ -42,7 +39,18 @@ class OperationsTable extends Component {
 				</Table.Header>
 				<Table.Body>
 					{operations.map((operation, index) => {
-						return <OperationTableRow key={index} operation={operation} firstDayOfMonth={firstDayOfMonth} />
+						let isFirstDayOfMonth = false;
+						if(moment(operation.date).startOf('month') < firstDayOfMonth) {
+							firstDayOfMonth = operation.date.startOf('month');
+							isFirstDayOfMonth = true;
+						}
+
+						return <OperationTableRow
+							key={index}
+							operation={operation}
+							isFirstDayOfMonth={isFirstDayOfMonth}
+							firstDayOfMonth={firstDayOfMonth}
+						/>
 					})}
 				</Table.Body>
 				<Table.Footer>

@@ -8,19 +8,12 @@ import clone from 'lodash.clone'
 
 export default class OperationTableRow extends Component {
 	render() {
-		const {operation, firstDayOfMonth} = this.props;
-		let isLabel = false;
-		let _firstDayOfMonth = clone(firstDayOfMonth);
-		if(moment(operation.date).startOf('month') < firstDayOfMonth) {
-			_firstDayOfMonth = operation.date.startOf('month');
-			isLabel = true;
-		}
-
-		const label = <Label color="blue" ribbon>{_firstDayOfMonth.format('MMMM YYYY')}</Label>;
+		const {operation, isFirstDayOfMonth, firstDayOfMonth} = this.props;
+		const label = <Label color="blue" ribbon>{firstDayOfMonth.format('MMMM YYYY')}</Label>;
 		return (
 			<Table.Row>
 				<Table.Cell>
-					{isLabel ? label : null}
+					{isFirstDayOfMonth ? label : null}
 					{operation.date.format('DD/MM/YYYY')}
 				</Table.Cell>
 				<Table.Cell>
