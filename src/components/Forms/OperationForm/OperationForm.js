@@ -86,9 +86,7 @@ class OperationForm extends Component {
 
 export default connect(
   (state) => ({token: state.user.token})
-)
-(reduxForm({
+)(reduxForm({
   form: formName,
   onSubmit: submit,
-})
-(OperationForm));
+})(OperationForm));

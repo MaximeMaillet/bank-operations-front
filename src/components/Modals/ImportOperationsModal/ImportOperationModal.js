@@ -49,5 +49,4 @@ export default connect(
 	(state) => ({
 		form: state.form[formName]
 	})
-)
-(withModal(ImportOperationModal));
+)(withModal(ImportOperationModal));

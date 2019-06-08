@@ -5,7 +5,6 @@ import withOperations from "../../../hoc/withOperations";
 import {withRouter} from "react-router-dom";
 import get from 'lodash.get';
 import queryString from "query-string";
-import OperationTableRowSub from "./OperationTableRowSub";
 import OperationTableRow from "./OperationTableRow";
 
 import './operationsTable.scss'

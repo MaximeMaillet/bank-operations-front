@@ -51,5 +51,4 @@ export default connect(
     changeForAll: (from, to) => dispatch(actionsPeriod.changeForAll(from, to)),
     changeForNothing: () => dispatch(actionsPeriod.changeForNothing())
   })
-)
-(withRouter(App));
+)(withRouter(App));

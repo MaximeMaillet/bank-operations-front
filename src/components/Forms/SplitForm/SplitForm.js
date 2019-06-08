@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'semantic-ui-css/semantic.min.css'
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Segment } from 'semantic-ui-react'
 import {connect} from "react-redux";
 import {Field, FieldArray, reduxForm} from 'redux-form'
 import api from "../../../lib/api";
@@ -61,6 +61,7 @@ const renderFields = ({ fields, meta: { error }, operation }) => {
 						component={FormComponent.SelectCreatable}
 						isMulti
 						width={16}
+						load={loadCategories}
 					/>
 				</div>
 				</Segment>

@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
-import {Button, Header, Icon, Modal, Card, Image} from 'semantic-ui-react'
+import {Button, Header, Icon, Modal, Card} from 'semantic-ui-react'
 import createSubmit from "../../../hoc/createSubmit";
 import withModal from "../../../hoc/withModal";
 import {connect} from "react-redux";
 import FormLoader from "../../Loaders/FormLoader/FormLoader";
 import get from 'lodash.get'
-import {FieldArray, submit} from "redux-form";
+import {submit} from "redux-form";
 
 import './splitOperationModal.scss'
-import SplitForm, {formName} from "../../Forms/SplitForm/SplitForm";
-import moment from "moment";
+import SplitForm, {formName} from "../../Forms/SplitForm/SplitForm"
 
 class SplitOperationModal extends Component {
 	componentDidMount() {
@@ -31,12 +30,7 @@ class SplitOperationModal extends Component {
 		const SubmitButton = createSubmit(formName, <Button color='green'><Icon name='checkmark' /> Split</Button>);
 		return (
 			<Modal
-				trigger={
-					operation.subs && operation.subs.length > 0 ?
-						<Button circular color="green" inverted icon='edit' onClick={this.props.open} />
-						:
-						<Button circular color="green" inverted icon='cut' onClick={this.props.open} />
-				}
+				trigger={<Button circular color="green" inverted icon='cut' onClick={this.props.open} />}
 				open={this.props.isOpen}
 				onClose={this.props.close}
 				closeOnEscape={this.props.closeable}
@@ -67,7 +61,6 @@ class SplitOperationModal extends Component {
 							operation={operation}
 							initialValues={{
 								id: operation.id,
-								subs: operation.subs,
 							}}
 							onSubmitSuccess={this.props.close}
 						/>

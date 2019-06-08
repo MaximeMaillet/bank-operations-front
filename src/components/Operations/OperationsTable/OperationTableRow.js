@@ -3,8 +3,6 @@ import {Label, Table} from "semantic-ui-react";
 import EditOperationModal from "../../Modals/EditOperationModal/EditOperationModal";
 import RemoveModal from "../../Modals/RemoveOperationModal/RemoveOperationModal";
 import SplitOperationModal from "../../Modals/SplitOperationModal/SplitOperationModal";
-import moment from "moment";
-import clone from 'lodash.clone'
 
 export default class OperationTableRow extends Component {
 	render() {

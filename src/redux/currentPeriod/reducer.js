@@ -1,9 +1,8 @@
-import moment from 'moment';
 import {TYPE} from "./actions";
 
 const initialState = {
-	from: null, //moment().startOf('month'),
-	to: null, //moment().add(1, 'months').startOf('month'),
+	from: null,
+	to: null,
 	all: 0,
 	period: 0,
 };

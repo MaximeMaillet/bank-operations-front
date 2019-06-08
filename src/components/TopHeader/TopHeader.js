@@ -45,5 +45,4 @@ export default connect(
 	(dispatch) => ({
 		logout: (redirectHome) => dispatch(actionsUser.logout(redirectHome))
 	})
-)
-(TopHeader);
+)(TopHeader);

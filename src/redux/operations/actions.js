@@ -84,16 +84,11 @@ const load = (data) => {
 			}
 
 			operations = operations.map((ope) => {
-				ope.subs = ope.subs.map(sub => {
-					sub.date = moment(sub.date).toDate();
-					sub.tags = sub.tags.map((item) => ({label: item, key: item, value: item}));
-					return sub;
-				});
 				return {
 					...ope,
 					date: moment(ope.date),
 				}
-			})
+			});
 
 			dispatch(loaded(
 				operations, total, {page, offset, lastPage}));
