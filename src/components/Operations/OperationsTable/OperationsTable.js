@@ -42,11 +42,7 @@ class OperationsTable extends Component {
 				</Table.Header>
 				<Table.Body>
 					{operations.map((operation, index) => {
-						if(operation.subs.length > 0) {
-							return <OperationTableRowSub key={index} operation={operation} firstDayOfMonth={firstDayOfMonth} />
-						} else {
-							return <OperationTableRow key={index} operation={operation} firstDayOfMonth={firstDayOfMonth} />
-						}
+						return <OperationTableRow key={index} operation={operation} firstDayOfMonth={firstDayOfMonth} />
 					})}
 				</Table.Body>
 				<Table.Footer>

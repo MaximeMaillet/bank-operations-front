@@ -13,7 +13,7 @@ export default function(data, dispatch) {
 		}
 	}
 
-	return api('POST', `/users/operations/${data.id}/sub_operations`, _data)
+	return api('POST', `/users/operations/${data.id}/split`, _data)
 		.then(() => dispatch(actionsOperation.reload()))
 		.catch((e) => handleNotAuthorized(e, dispatch))
 		.catch(handleApiErrors);
